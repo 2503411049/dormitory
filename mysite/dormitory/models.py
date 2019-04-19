@@ -4,13 +4,13 @@ from django.db import models
 # 定义用户类，在Django中，定义model需要继承models.Model类
 
 # 定义系别类
-class Department(models.Manager):
+class Department(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="系别主键")
     dep_name = models.CharField(max_length=100, unique=True, verbose_name="系别名称")
 
 
 # 定义专业
-class Domain(models.Manager):
+class Domain(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="专业主键")
     dom_name = models.CharField(max_length=100, unique=True, verbose_name="专业名称")
     # 设置外键 外键为系别id
@@ -18,13 +18,13 @@ class Domain(models.Manager):
 
 
 # 定义楼房
-class Tower(models.Manager):
+class Tower(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="楼房主键")
     num = models.CharField(max_length=20, unique=True, verbose_name="楼房编号")
 
 
 # 定义楼层
-class Floor(models.Manager):
+class Floor(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="楼层主键")
     con = models.CharField(max_length=20, unique=True, verbose_name="楼层编号")
     sex = models.CharField(max_length=50, default="男", verbose_name="宿舍性别")
@@ -35,7 +35,7 @@ class Floor(models.Manager):
 
 
 # 定义宿舍
-class Dorm(models.Manager):
+class Dorm(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="宿舍主键")
     suno = models.CharField(max_length=50, unique=True, verbose_name="宿舍编号")
     # 外键
@@ -48,7 +48,7 @@ class Dorm(models.Manager):
 
 
 # 定义报修
-class Repairs(models.Manager):
+class Repairs(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="宿舍主键")
     # 外键
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, verbose_name="宿舍编号")
@@ -58,7 +58,7 @@ class Repairs(models.Manager):
 
 
 # 定义水电
-class Charge(models.Manager):
+class Charge(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="水电主键")
     # 外键
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, verbose_name="宿舍编号")
@@ -68,7 +68,7 @@ class Charge(models.Manager):
 
 
 # 定义学生
-class Student(models.Manager):
+class Student(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="学生主键")
     sno = models.IntegerField(max_length=12, unique=True, verbose_name="学号")
     password = models.CharField(max_length=100, verbose_name="密码")
@@ -77,8 +77,8 @@ class Student(models.Manager):
     age = models.IntegerField(default=18, verbose_name="年龄")
     avatar = models.CharField(max_length=255, default='/static/blog/img/avatar08.jpg', verbose_name="头像")
     # 外键
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name="所属系别")
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE, verbose_name="所属专业")
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, verbose_name="所属系别")
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE, null=True, verbose_name="所属专业")
 
     tel = models.IntegerField(max_length=50, verbose_name="电话号码")
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, null=True, verbose_name="所属楼房")
@@ -87,7 +87,7 @@ class Student(models.Manager):
 
 
 # 定义意见
-class Suggest(models.Manager):
+class Suggest(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="意见主键")
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, null=True, verbose_name="宿舍编号")
     sno = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学号")
@@ -97,16 +97,16 @@ class Suggest(models.Manager):
 
 
 # 定义管理员
-class Admin(models.Manager):
+class Admin(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="管理员编号")
     account = models.CharField(max_length=100, unique=True, verbose_name="登录名")
     password = models.CharField(max_length=100, verbose_name="密码")
-    name = models.CharField(max_length=100, unique=True, verbose_name="姓名")
-    flag = models.IntegerField(max_length=10, verbose_name="权限标识符")
+    name = models.CharField(max_length=100, null=True, unique=True, verbose_name="姓名")
+    flag = models.IntegerField(max_length=10, default="1", verbose_name="权限标识符")
 
 
 # 定义公告
-class Notice(models.Manager):
+class Notice(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="编号")
     title = models.CharField(max_length=200, verbose_name="标题")
     content = models.TextField(verbose_name="内容")
