@@ -1,11 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>首页</title>
-</head>
-<body>
-<h1>首页面</h1>
+<html>
+    <head>
+        {% load static %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        <title>宿舍管理系统后台</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/index.css' %}"/>
+<!-- 		<style type="text/css">
+			#bg{
+				background-image:url(images/content/dotted.png);
+			}
+			.line{
+				height:2px;
+				width:100%;
+				background-image:url(images/left/line_bg.png);
+				background-repeat:repeat-x;
+			}
+			.system_log dt{background-image:url(images/left/system.png)}
+			.custom dt{background-image:url(images/left/custom.png)}
+			.channel dt{background-image:url(images/left/channel.png)}
+			.app dt{background-image:url(images/left/app.png)}
+			.cloud dt{background-image:url(images/left/cloud.png)}
+			.syetem_management dt{background-image:url(images/left/syetem_management.png)}
+			.source dt{background-image:url(images/left/source.png)}
+			.statistics dt{background-image:url(images/left/statistics.png)}
+			.menus_area dl dd:last-child{padding-bottom:10px;}
+			dt.on{background-color: #317eb4}
+		</style> -->
+    </head>
+    <body id="bg">
+		<div class="nav">
+			<div class="tit_info">
+				<p class="title ">中州大学宿舍管理系统</p>
+			</div>
+		</div>
+        <div class="container">
+            <div class="menus_area" id="menus_area">
+                <div class="line"></div>
+                <dl class="system_log">
+                    <dt>管理员管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加管理员</a></dd>
+                    <dd><a href="#">管理管理员</a></dd>
+                   
+                </dl>
 
-</body>
+                <dl class="custom">
+                    <dt>公告信息管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加公共信息</a></dd>
+                    <dd><a href="#">管理公共信息</a></dd>
+                    
+                </dl>
+
+                <dl class="channel">
+                    <dt>系别管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加系别</a></dd>
+                    <dd><a href="#">管理系别</a></dd>
+                    
+                </dl>
+
+                <dl class="app">
+                    <dt>专业管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加专业</a></dd>
+                    <dd><a href="#">管理专业</a></dd>
+                    
+                </dl>
+
+                <dl class="cloud">
+                    <dt>宿舍管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加楼房信息</a></dd>
+					<dd><a href="#">管理楼房信息</a></dd>
+					<dd><a href="#">添加楼层信息</a></dd>
+					<dd><a href="#">管理楼层信息</a></dd>
+					<dd><a href="#">添加宿舍信息</a></dd>
+					<dd><a href="#">管理宿舍信息</a></dd>
+                </dl>
+
+                <dl class="syetem_management">
+                    <dt>学生管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加学生信息</a></dd>
+                    <dd><a href="#">管理学生信息</a></dd>
+                    <dd><a href="#">分配宿舍</a></dd>
+                    
+                </dl>
+
+                <dl class="source">
+                    <dt>水电费管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加水电费</a></dd>
+                    <dd><a href="#">管理水电费</a></dd>
+                </dl>
+
+                <dl class="statistics">
+                    <dt>报修管理<img src="images/left/select_xl01.png"></dt>
+                    <dd class="first_dd"><a href="#">添加报修信息</a></dd>
+					<dd><a href="#">管理报修信息</a></dd>
+
+                </dl>
+				<dl class="source">
+					<dt>意见管理<img src="images/left/select_xl01.png"></dt>
+					<dd class="first_dd"><a href="#">添加意见信息</a></dd>
+					<dd><a href="#">管理意见信息</a></dd>
+				</dl>
+				<dl class="source">
+					<dt>查询统计<img src="images/left/select_xl01.png"></dt>
+					<dd class="first_dd"><a href="#">查询宿舍使用情况</a></dd>
+					<dd><a href="#">水电费统计</a></dd>
+				</dl>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="{% static 'dormitory/js/jquery.js' %}"></script>
+        <script type="text/javascript">
+
+            $(function() {
+                alert("aaaa")
+                $("#menus_area").find("dt").click(function() { //一级菜单点击
+                    if (!$(this).hasClass("on")) { //当前一级菜单不选中状态才切换
+                        $("#menus_area").find("dt").removeClass("on");//所有的一级菜单去除选中样式
+                        $(this).addClass("on");//当前一级菜单去除选中样式
+                        $('dd').slideUp();//所有二级菜单隐藏
+                        $(this).nextAll('dd').slideToggle();//当前所有二级菜单切换
+                    }
+                });
+            })
+        </script>
+		<div style="text-align:center;">
+</div>
+    </body>
 </html>
