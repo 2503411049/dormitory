@@ -219,7 +219,7 @@ def del_charge(request):
 
 # 添加公告信息
 def add_notice(request):
-    pass
+    return render(request, 'dormitory/add_notice.html')
 
 
 def del_notice(request):

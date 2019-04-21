@@ -2,17 +2,20 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>宿舍管理系统后台</title>
+
+		<title>{% block title %}宿舍管理系统后台{% endblock %}</title>
+
 		{% load static %}
 		<link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/bootstrap.css' %}"/>
 		<link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/index.css' %}"/>
 
 		<script src="{% static 'dormitory/js/jquery-1.12.4.js' %}" type="text/javascript" charset="utf-8"></script>
-		<script src="{% static 'dormitory/js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'dormitory/js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
 		<script src="{% static 'dormitory/js/index.js' %}" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<!-- 导航栏 -->
+        {% block nav %}
 		<div class="nav">
 			<div class="tit_info">
 				<p class="title ">中州大学宿舍管理系统</p>
@@ -40,7 +43,7 @@
 				</div>
 				<div class="skin">
 					<ul>
-						<li><img src="{% static 'dormitory/img/skin_black.png' %}" id="skin_black" ></li>
+						<li><img src="{% static 'dormitory/img/skin_black.png' %}" id="skin_block" ></li>
 					</ul>
 					<ul>
 						<li><img src="{% static 'dormitory/img/skin_plant.png' %}" id="skin_plant" ></li>
@@ -49,44 +52,45 @@
 						<li><img src="{% static 'dormitory/img/skin_red.png' %}" id="skin_red" ></li>
 					</ul>
 				</div>
-				
+
 			</div>
-			
-			
+            {% endblock %}
+
 		</div>
 		<!-- 内容 -->
 		<div class="content">
 			<!-- 左侧导航 -->
+            {% block left_nav %}
 			<div class="left_nav">
 				<div class="menus_area" id="menus_area">
 					<dl class="system_log">
 						<dt><img class="login_left" src="{% static 'dormitory/img/admin.png' %}" >管理员管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加管理员</a></dd>
 						<dd><a href="#">管理管理员</a></dd>
-				   
+
 					</dl>
 
 					<dl class="custom">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >公告信息管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加公共信息</a></dd>
 						<dd><a href="#">管理公共信息</a></dd>
-						
+
 					</dl>
-	
+
 					<dl class="channel">
 						<dt><img class="login_left" src="{% static 'dormitory/img/xibie.png' %}" >系别管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加系别</a></dd>
 						<dd><a href="#">管理系别</a></dd>
-						
+
 					</dl>
-	
+
 					<dl class="app">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Domain.png' %}" >专业管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加专业</a></dd>
 						<dd><a href="#">管理专业</a></dd>
-						
+
 					</dl>
-	
+
 					<dl class="cloud">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Dorm.png' %}">宿舍管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加楼房信息</a></dd>
@@ -96,26 +100,26 @@
 						<dd><a href="#">添加宿舍信息</a></dd>
 						<dd><a href="#">管理宿舍信息</a></dd>
 					</dl>
-	
+
 					<dl class="syetem_management">
 						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >学生管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加学生信息</a></dd>
 						<dd><a href="#">管理学生信息</a></dd>
 						<dd><a href="#">分配宿舍</a></dd>
-						
+
 					</dl>
-	
+
 					<dl class="water">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Charge.png' %}" >水电费管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加水电费</a></dd>
 						<dd><a href="#">管理水电费</a></dd>
 					</dl>
-	
+
 					<dl class="statistics">
 						<dt><img class="login_left" src="{% static 'dormitory/img/repairs.png' %}" >报修管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="#">添加报修信息</a></dd>
 						<dd><a href="#">管理报修信息</a></dd>
-	
+
 					</dl>
 					<dl class="idea">
 						<dt><img class="login_left" src="{% static 'dormitory/img/idea.png' %}" >意见管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
@@ -127,21 +131,25 @@
 						<dd class="first_dd"><a href="#">查询宿舍使用情况</a></dd>
 						<dd><a href="#">水电费统计</a></dd>
 					</dl>
-					
-				</div>			
-				
+
+				</div>
+
 			</div>
+            {% endblock %}
 			<!-- 内容部分 -->
+            {% block right_content %}
 			<div class="right_content">
 				<div class="con_title">
-					
+
 					<div class="p">
-						<p>管理学生信息</p>
+						<p>{% block content_title %}管理学生信息{% endblock %}</p>
 					</div>
-					
+
 				</div>
+                {% block details %}
 				<div class="details">
 					<table class="table table-hover table-bordered table-striped">
+                        {% block query %}
 						<tr class="query">
 							<td colspan="9">
 								<form action="" method="">
@@ -150,7 +158,7 @@
 											<option >信息工程学院</option>
 											<option >机电工程</option>
 										</select>
-									
+
 									专业：<select name="domain">
 											<option >--全部--</option>
 											<option >计算机信息管理</option>
@@ -162,6 +170,8 @@
 								</form>
 							</td>
 						</tr>
+                        {% endblock %}
+                        {% block text-center %}
                         <tr class="text-center">
                             <td>编号</td>
                             <td>学号</td>
@@ -173,7 +183,7 @@
 							<td>宿舍编号</td>
 							<td>操作</td>
                         </tr>
-                        
+
                        <tr class="text-center">
                             <td>1</td>
 							<td>201652070115</td>
@@ -183,7 +193,7 @@
 							<td>计算机信息管理</td>
 							<td>15836883440</td>
 							<td>1435</td>
-							
+
                             <td class="text-center">
 
                                 <a onclick="return window.confirm('您确定要删除该文章吗？');" href="#" class="btn btn-danger">删除</a>
@@ -191,19 +201,25 @@
                                 <a href="#" class="btn btn-primary" >查看</a>
                             </td>
                         </tr>
-                       
-                        
+                        {% endblock %}
+
+
 
                     </table>
-					
-					
+
+
 				</div>
-				
+                {% endblock %}
+
+
 			</div>
+            {% endblock %}
 		</div>
 		<!-- 底部 -->
+        {% block end %}
 		<div class="end">
-			
+s
 		</div>
+        {% endblock %}
 	</body>
 </html>

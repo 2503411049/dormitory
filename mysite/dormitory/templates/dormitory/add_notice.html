@@ -1,0 +1,34 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}添加公告信息{% endblock %}
+{% block content_title %}
+添加公告信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="#">
+    <table class="table table-hover table-bordered table-striped">
+        <tr>
+            <td>公告标题：</td>
+            <td><input type="text" rows="50" name="title" autocomplete="off"><span class="msg">{{msg_title}}</span></td>
+        </tr>
+
+        <tr>
+            <td>内容：</td>
+
+           <td><textarea id="content" name="content"  cols="120" rows="15" ></textarea></td>
+            <!--<script  id="content" name="content"></script>-->
+        </tr>
+        <p class="msg">{{content_msg}}</p>
+
+    </table>
+     <div class="text-right">
+
+         <a onclick="return window.confirm('您确定要取消编辑吗？'); "href="#" class="btn btn-danger">取消编辑</a>
+        <input type="submit" value="发布公告" class="btn btn-primary ">
+    </div>
+</form>
+{% endblock %}

@@ -42,8 +42,8 @@ class Dorm(models.Model):
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, verbose_name="所属楼房")
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE, verbose_name="所属楼层")
 
-    max_num = models.IntegerField(default=8, verbose_name="床铺数量")
-    people = models.IntegerField(default=0, verbose_name="已住人数")
+    max_num = models.IntegerField(default=8,  verbose_name="床铺数量")
+    people = models.IntegerField(default=0,  verbose_name="已住人数")
     sex = models.CharField(max_length=50, default="男", verbose_name="宿舍性别")
 
 
@@ -70,17 +70,17 @@ class Charge(models.Model):
 # 定义学生
 class Student(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="学生主键")
-    sno = models.IntegerField(max_length=12, unique=True, verbose_name="学号")
+    sno = models.IntegerField( unique=True, verbose_name="学号")
     password = models.CharField(max_length=100, verbose_name="密码")
     name = models.CharField(max_length=100, verbose_name="姓名")
     gender = models.CharField(max_length=20, verbose_name="性别")
-    age = models.IntegerField(default=18, verbose_name="年龄")
+    age = models.IntegerField( verbose_name="年龄")
     avatar = models.CharField(max_length=255, default='/static/blog/img/avatar08.jpg', verbose_name="头像")
     # 外键
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, verbose_name="所属系别")
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, null=True, verbose_name="所属专业")
 
-    tel = models.IntegerField(max_length=50, verbose_name="电话号码")
+    tel = models.IntegerField( verbose_name="电话号码")
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, null=True, verbose_name="所属楼房")
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE, null=True, verbose_name="所属楼层")
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, null=True, verbose_name="宿舍编号")
@@ -102,7 +102,7 @@ class Admin(models.Model):
     account = models.CharField(max_length=100, unique=True, verbose_name="登录名")
     password = models.CharField(max_length=100, verbose_name="密码")
     name = models.CharField(max_length=100, null=True, unique=True, verbose_name="姓名")
-    flag = models.IntegerField(max_length=10, default="1", verbose_name="权限标识符")
+    flag = models.IntegerField( default="1", verbose_name="权限标识符")
 
 
 # 定义公告
