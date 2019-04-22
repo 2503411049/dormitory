@@ -1,0 +1,51 @@
+{% extends 'dormitory/base.html' %}
+
+{% load static %}
+{% block title %}学院管理{% endblock %}
+
+
+{% block content_title %}
+学院管理
+{% endblock %}
+
+
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+
+
+
+<!-- 内容详情-->
+{% block text-center %}
+<style>
+    .edit_dep{
+        width: 300px;
+        height: 50px;
+        border: 1px solid red;
+        background-color: aliceblue;
+    }
+
+</style>
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>学院</td>
+        <td>操作</td>
+    </tr>
+
+    {% for dep in deps %}
+    <tr class="text-center">
+       <td>{{ forloop.counter }}</td>
+       <td>{{ dep.dep_name }}</td>
+        <td class="text-center">
+<!--            <a href="#"  ><img src="{% static 'dormitory/img/edit.png' %}" alt="修改"></a>-->
+            <a href="{% url 'dormitory:del_dep' dep.id %}"  onclick="return window.confirm('您确定要删除该学院吗？');" ><img src="{% static 'dormitory/img/del.png' %}" alt="删除"></a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

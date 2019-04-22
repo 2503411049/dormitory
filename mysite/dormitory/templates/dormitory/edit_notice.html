@@ -10,19 +10,19 @@
 <!-- 内容详情-->
 {% block text-center %}
 
-<form action="{% url 'dormitory:add_notice' %}" method="post">
+<form action="{% url 'dormitory:edit_notice' notice.id %}" method="post">
     {% csrf_token %}
     {{msg}}
     <table class="table table-hover table-bordered table-striped">
         <tr>
             <td>公告标题：</td>
-            <td><input type="text" rows="50" name="title" autocomplete="off"><span class="msg"></span></td>
+            <td><input type="text" rows="50" name="title" autocomplete="off" value="{{ notice.title }}"><span class="msg"></span></td>
         </tr>
 
         <tr>
             <td>内容：</td>
 
-           <td><textarea id="content" name="content"  cols="120" rows="15" ></textarea></td>
+           <td><textarea id="content" name="content"  cols="120" rows="15" >{{ notice.content }}</textarea></td>
             <!--<script  id="content" name="content"></script>-->
         </tr>
         <p class="msg">{{content_msg}}</p>
@@ -30,7 +30,7 @@
     </table>
      <div class="text-right">
 
-         <a onclick="return window.confirm('您确定要取消编辑吗？'); "href="#" class="btn btn-danger">取消编辑</a>
+         <a onclick="return window.confirm('您确定要取消编辑吗？'); "href="{% url 'dormitory:notice_list' %}" class="btn btn-danger">取消编辑</a>
         <input type="submit" value="发布公告" class="btn btn-primary ">
     </div>
 </form>

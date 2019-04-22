@@ -20,6 +20,7 @@
         <div id="hint"><!-- 提示框 -->
             <p>登录失败</p>
         </div>
+        {{msg}}
         <div id="login_wrap">
 
             <div id="login"><!-- 登录注册切换动画 -->
@@ -37,6 +38,7 @@
                         <p class="form"><input type="text" id="user" autocomplete="off" name="account" placeholder="账户/学号"></p>
                         <p class="form"><input type="password" id="passwd" name="password" placeholder="密码"></p>
 
+
                         <p class="form confirm"><input type="password" id="confirm-passwd" name="password2"  placeholder="确认密码"></p>
 
                             <div class=" hang">
@@ -52,6 +54,11 @@
                                 </div>
                             </div>
                             <div class="end-sub">
+                                <div class="user" style="color: white">
+                                        <input type="radio" name="user" value="admin" checked >管理员
+                                        <input type="radio" name="user" value="student">学生
+                                </div>
+                                <br>
                                 <div class="sub">
                                     <button type="submit" id="submit" class="btn" >登录</button>
 

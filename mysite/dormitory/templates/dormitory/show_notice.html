@@ -1,0 +1,22 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}添加公告信息{% endblock %}
+{% block content_title %}
+公告信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<table class="table table-hover table-bordered table-striped">
+    <tr>
+        <td class="text-center"> {{ notice.title }}</td>
+    </tr>
+
+    <tr>
+        <td>内容：<br><br>
+            {{ notice.content }}</td>
+    </tr>
+</table>
+{% endblock %}

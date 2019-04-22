@@ -10,8 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/index.css' %}"/>
 
 		<script src="{% static 'dormitory/js/jquery-1.12.4.js' %}" type="text/javascript" charset="utf-8"></script>
-        <script src="{% static 'dormitory/js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'dormitory/js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
 		<script src="{% static 'dormitory/js/index.js' %}" type="text/javascript" charset="utf-8"></script>
+
 	</head>
 	<body>
 		<!-- 导航栏 -->
@@ -24,7 +25,7 @@
 				<table>
 					<tr>
 						<td class="td_admin">管理员</td>
-						<td class="td_info" id="show">张三<img src="{% static 'dormitory/img/drop-down.png' %}" ></td>
+						<td class="td_info" id="show">{{request.session.Admin.name}}<img src="{% static 'dormitory/img/drop-down.png' %}" ></td>
 						<td class="td_img" id="skin"><img src="{% static 'dormitory/img/clothes1.png' %}" ></td>
 					</tr>
 				</table>
@@ -37,13 +38,13 @@
 							<td><a href="#">修改密码</a></td>
 						</tr>
 						<tr class="info_tr">
-							<td><a href="#">退出系统</a></td>
+							<td><a href="{% url 'dormitory:logout' %}">退出系统</a></td>
 						</tr>
 					</table>
 				</div>
 				<div class="skin">
 					<ul>
-						<li><img src="{% static 'dormitory/img/skin_black.png' %}" id="skin_block" ></li>
+						<li><img src="{% static 'dormitory/img/skin_black.png' %}" id="skin_black" ></li>
 					</ul>
 					<ul>
 						<li><img src="{% static 'dormitory/img/skin_plant.png' %}" id="skin_plant" ></li>
@@ -65,22 +66,22 @@
 				<div class="menus_area" id="menus_area">
 					<dl class="system_log">
 						<dt><img class="login_left" src="{% static 'dormitory/img/admin.png' %}" >管理员管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加管理员</a></dd>
-						<dd><a href="#">管理管理员</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_admin' %}">添加管理员</a></dd>
+						<dd><a href="{% url 'dormitory:admin_list' %}">管理管理员</a></dd>
 
 					</dl>
 
 					<dl class="custom">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >公告信息管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加公共信息</a></dd>
-						<dd><a href="#">管理公共信息</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_notice' %}">添加公共信息</a></dd>
+						<dd><a href="{% url 'dormitory:notice_list' %}">管理公共信息</a></dd>
 
 					</dl>
 
 					<dl class="channel">
-						<dt><img class="login_left" src="{% static 'dormitory/img/xibie.png' %}" >系别管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加系别</a></dd>
-						<dd><a href="#">管理系别</a></dd>
+						<dt><img class="login_left" src="{% static 'dormitory/img/xibie.png' %}" >学院管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_dep' %}">添加学院</a></dd>
+						<dd><a href="{% url 'dormitory:dep_list' %}">管理学院</a></dd>
 
 					</dl>
 

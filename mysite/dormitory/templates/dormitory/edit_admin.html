@@ -1,0 +1,64 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}修改管理员信息{% endblock %}
+{% block content_title %}
+修改管理员信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:edit_admin' admin.id %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>
+                账户：<input type="text" name="account" disabled="disabled" value="{{ admin.account }}" >
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>
+                旧密码：<input type="password" name="old_password"  >
+                <span style="color: red">{{ error3 }}</span>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>
+                新密码：<input type="password" name="new_password1"  >
+                <span style="color: red">{{ error2 }}</span>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>
+                确认密码：<input type="password" name="new_password2"  >
+                <span style="color: red">{{ error1 }}</span>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>姓名：<input type="text" name="name" value="{{ admin.name }}" ></td>
+        </tr>
+        <tr class="text-center">
+            <td>权限：&nbsp&nbsp&nbsp&nbsp
+                {% if admin.flag == "1" %}
+                    <input type="radio" name="flag" value="1" checked>超级管理员
+                    &nbsp&nbsp&nbsp&nbsp
+                     <input type="radio" name="flag" value="0" >管理员</td>
+                {% else %}
+                    <input type="radio" name="flag" value="1"  >超级管理员
+                    &nbsp&nbsp&nbsp&nbsp
+                     <input type="radio" name="flag" value="0" checked>管理员</td>
+                {% endif %}
+        </tr>
+        <tr class="text-center">
+             <td>
+                 <input type="submit" value="修改" class="btn btn-primary ">
+                 &nbsp&nbsp&nbsp&nbsp{{msg}}
+                <span style="color: red">{{ error4 }}</span>
+             </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}

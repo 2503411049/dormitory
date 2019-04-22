@@ -102,7 +102,7 @@ class Admin(models.Model):
     account = models.CharField(max_length=100, unique=True, verbose_name="登录名")
     password = models.CharField(max_length=100, verbose_name="密码")
     name = models.CharField(max_length=100, null=True, unique=True, verbose_name="姓名")
-    flag = models.IntegerField( default="1", verbose_name="权限标识符")
+    flag = models.CharField( default="1", max_length=10, verbose_name="权限标识符")
 
 
 # 定义公告

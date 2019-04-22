@@ -127,3 +127,6 @@ STATIC_URL = '/static/'
 
 # 加密，加盐
 SALT = "@du#abc$qwe&"
+
+# 表示存储在session中对象，首先使用如下对象序列化
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
