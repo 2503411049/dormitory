@@ -1,0 +1,77 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+
+{% block title %}管理学生信息{% endblock %}
+
+
+{% block content_title %}
+管理学生信息
+{% endblock %}
+
+
+{% block query %}
+<tr class="query">
+    <td colspan="11" >
+        <form action="" method="">
+            系别：<select name="department">
+                    <option >--全部--</option>
+                    <option >信息工程学院</option>
+                    <option >机电工程</option>
+                </select>
+
+            专业：<select name="domain">
+                    <option >--全部--</option>
+                    <option >计算机信息管理</option>
+                    <option >计算机网络</option>
+                </select>
+            学号：<input type="text">
+            姓名：<input type="text">
+            <a href="#" class="btn btn-primary select_all" ><p>搜索</p></a>
+        </form>
+    </td>
+</tr>
+{% endblock %}
+
+
+
+{% block text-center %}
+    <tr class="text-center">
+        <td>编号</td>
+        <td>学号</td>
+        <td>姓名</td>
+        <td>性别</td>
+        <td>学院</td>
+        <td>专业</td>
+        <td>楼房</td>
+        <td>楼层</td>
+        <td>宿舍编号</td>
+        <td>手机号</td>
+        <td>操作</td>
+    </tr>
+    {% for student in students %}
+    <tr class="text-center">
+
+        <td>{{ forloop.counter }}</td>
+        <td>{{ student.sno }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.gender }}</td>
+        <td>{{ student.department.dep_name }}</td>
+        <td>{{ student.domain.dom_name }}</td>
+        <td>{{ student.tower.num }}</td>
+        <td>{{ student.floor.con }}</td>
+        <td>{{ student.dorm.suno }}</td>
+        <td>{{ student.tel }}</td>
+        <td class="text-center">
+
+            <a onclick="return window.confirm('您确定要删除该文章吗？');" href="#" class="btn btn-danger">删除</a>
+            <a href="#" class="btn btn-warning" >修改</a>
+            <a href="#" class="btn btn-primary" >查看</a>
+        </td>
+
+    </tr>
+    {% empty %}
+    <td colspan="9">当前未添加学生信息</td>
+   {% endfor %}
+{% endblock %}
+
+

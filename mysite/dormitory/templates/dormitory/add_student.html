@@ -1,0 +1,127 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}添加学生信息{% endblock %}
+{% block content_title %}
+添加学生信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+    <tr class="text-center">
+        <td><span style="color: red">{{error1}}</span></td>
+
+    </tr>
+
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:add_student' %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>学号：
+                <input type="number" name="sno">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>密码：
+                <input type="password" name="password">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>姓名：<input type="text" name="name">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>
+                学院：<select name="dep">
+                    <option >--全部--</option>
+                    {% for dep in deps %}
+                        <option >{{dep.dep_name}}</option>
+                    {% empty %}
+                        <option >---该学院暂无专业---</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>
+                专业：<select name="domain">
+                    <option >--全部--</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>性别：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <input type="radio" name="gender" value="男" checked >男
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <input type="radio" name="gender" value="女">女
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            </td>
+        </tr>
+        <tr class="text-center">
+             <td>
+                 <input type="submit" value="添加" class="btn btn-primary ">
+                 &nbsp&nbsp&nbsp&nbsp
+                 {{msg}}
+                 <span style="color: red">{{error}}</span>
+             </td>
+        </tr>
+    </table>
+</form>
+
+
+<!--<script>-->
+<!--    $(function(){-->
+
+<!--        $("#tower").change(function () {-->
+
+<!--            let $tower = $("#tower").val()-->
+
+<!--            if ($tower == "-&#45;&#45;全部-&#45;&#45;"){-->
+
+<!--                alert("请选择楼房")-->
+<!--            }else {-->
+
+<!--                $.ajax({-->
+<!--					url:"/dormitory/ajax_all_floor/"+$tower,-->
+<!--					type:"get",-->
+<!--					dataType:"json",-->
+<!--					success:function(data){-->
+<!--					    // 清空-->
+<!--					    $("#floor").empty()-->
+<!--					    console.log(data)-->
+
+<!--                        if (data.length == 0){-->
+
+<!--                            $option = $("<option>")-->
+<!--                            $option.text("-&#45;&#45;未分配楼层-&#45;&#45;")-->
+<!--                            $("#floor").append($option)-->
+<!--                        }-->
+
+<!--                        for (var i = 0; i<data.length; i++ ){-->
+<!--                            var floor = data[i];-->
+<!--                            $option = $("<option>")-->
+<!--                            $option.attr("value", floor.pk)-->
+<!--                            $option.text(floor.fields.con)-->
+<!--                            $("#floor").append($option)-->
+
+<!--                        }-->
+
+<!--					},-->
+<!--                    error:function () {-->
+<!--                        alert("失败了")-->
+<!--                    }-->
+<!--				})-->
+
+<!--            }-->
+
+<!--        });-->
+
+<!--    })-->
+<!--</script>-->
+
+{% endblock %}

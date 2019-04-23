@@ -97,15 +97,15 @@
 						<dd class="first_dd"><a href="{% url 'dormitory:add_tower' %}">添加楼房信息</a></dd>
 						<dd><a href="{% url 'dormitory:tower_list' %}">管理楼房信息</a></dd>
 						<dd><a href="{% url 'dormitory:add_floor' %}">添加楼层信息</a></dd>
-						<dd><a href="#">管理楼层信息</a></dd>
-						<dd><a href="#">添加宿舍信息</a></dd>
-						<dd><a href="#">管理宿舍信息</a></dd>
+						<dd><a href="{% url 'dormitory:floor_list' %}">管理楼层信息</a></dd>
+						<dd><a href="{% url 'dormitory:add_dorm' %}">添加宿舍信息</a></dd>
+						<dd><a href="{% url 'dormitory:dorm_list' %}">管理宿舍信息</a></dd>
 					</dl>
 
 					<dl class="syetem_management">
 						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >学生管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加学生信息</a></dd>
-						<dd><a href="#">管理学生信息</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_student' %}">添加学生信息</a></dd>
+						<dd><a href="{% url 'dormitory:student_list' %}">管理学生信息</a></dd>
 						<dd><a href="#">分配宿舍</a></dd>
 
 					</dl>
@@ -219,7 +219,6 @@
 		<!-- 底部 -->
         {% block end %}
 		<div class="end">
-s
 		</div>
         {% endblock %}
 	</body>

@@ -1,0 +1,53 @@
+{% extends 'dormitory/base.html' %}
+
+{% load static %}
+{% block title %}管理宿舍信息{% endblock %}
+
+
+{% block content_title %}
+管理宿舍信息
+{% endblock %}
+
+
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+
+
+
+<!-- 内容详情-->
+{% block text-center %}
+
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>楼房</td>
+        <td>楼层</td>
+        <td>宿舍号</td>
+        <td>床铺</td>
+        <td>已住人数</td>
+        <td>入住性别</td>
+        <td>操作</td>
+    </tr>
+
+    {% for dorm in dorms %}
+    <tr class="text-center">
+       <td>{{ forloop.counter }}</td>
+       <td>{{ dorm.tower.num }}</td>
+       <td>{{ dorm.floor.con }}</td>
+       <td>{{ dorm.suno}}</td>
+       <td>{{ dorm.max_num }}</td>
+       <td>{{ dorm.people }}</td>
+       <td>{{ dorm.sex }}</td>
+        <td class="text-center">
+<!--            <a href="#"  ><img src="{% static 'dormitory/img/edit.png' %}" alt="修改"></a>-->
+            <a href="{% url 'dormitory:del_dorm' dorm.id %}"  onclick="return window.confirm('您确定要删除该宿舍信息吗？');" ><img src="{% static 'dormitory/img/del.png' %}" alt="删除"></a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

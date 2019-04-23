@@ -1,0 +1,109 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}添加宿舍信息{% endblock %}
+{% block content_title %}
+添加宿舍信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:add_dorm' %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>楼房：
+                <select name="tower" id="tower" >
+                    <option >---全部---</option>
+                     {% for tower in towers %}
+                        <option value="{{tower.id}}" >{{tower.num}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>楼层：
+                <select name="floor" id="floor" >
+
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>学院：
+                <select name="max_num"  >
+                        <option >4人间</option>
+                        <option >8人间</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>宿舍号：<input type="text" name="suno">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>已住人数：<input type="text" value="0" name="peopel">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+             <td><input type="submit" value="添加" class="btn btn-primary ">&nbsp&nbsp&nbsp&nbsp{{msg}}</td>
+        </tr>
+    </table>
+</form>
+
+
+<script>
+    $(function(){
+
+        $("#tower").change(function () {
+
+            let $tower = $("#tower").val()
+
+            if ($tower == "---全部---"){
+
+                alert("请选择楼房")
+            }else {
+
+                $.ajax({
+					url:"/dormitory/ajax_all_floor/"+$tower,
+					type:"get",
+					dataType:"json",
+					success:function(data){
+					    // 清空
+					    $("#floor").empty()
+					    console.log(data)
+
+                        if (data.length == 0){
+
+                            $option = $("<option>")
+                            $option.text("---未分配楼层---")
+                            $("#floor").append($option)
+                        }
+
+                        for (var i = 0; i<data.length; i++ ){
+                            var floor = data[i];
+                            $option = $("<option>")
+                            $option.attr("value", floor.pk)
+                            $option.text(floor.fields.con)
+                            $("#floor").append($option)
+
+                        }
+
+					},
+                    error:function () {
+                        alert("失败了")
+                    }
+				})
+
+            }
+
+        });
+
+    })
+</script>
+
+{% endblock %}

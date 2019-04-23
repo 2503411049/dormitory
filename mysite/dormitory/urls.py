@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^reset_admin/(?P<a_id>\d+)/$", views.reset_admin, name="reset_admin"),
 
     url(r"^add_student/$", views.add_student, name="add_student"),
+    url(r"^student_list/$", views.student_list, name="student_list"),
     url(r"^del_student/$", views.del_student, name="del_student"),
     url(r"^add_dep/$", views.add_dep, name="add_dep"),
     url(r"^dep_list/$", views.dep_list, name="dep_list"),
@@ -27,9 +28,14 @@ urlpatterns = [
     url(r"^add_tower/$", views.add_tower, name="add_tower"),
     url(r"^tower_list/$", views.tower_list, name="tower_list"),
     url(r"^del_tower/(?P<t_id>\d+)/$", views.del_tower, name="del_tower"),
+
     url(r"^add_floor/$", views.add_floor, name="add_floor"),
+    url(r"^floor_list/$", views.floor_list, name="floor_list"),
+    url(r"^del_floor/(?P<f_id>\d+)/$", views.del_floor, name="del_floor"),
+
     url(r"^add_dorm/$", views.add_dorm, name="add_dorm"),
-    url(r"^del_dorm/$", views.del_dorm, name="del_dorm"),
+    url(r"^dorm_list/$", views.dorm_list, name="dorm_list"),
+    url(r"^del_dorm/(?P<d_id>\d+)/$", views.del_dorm, name="del_dorm"),
     url(r"^add_repairs/$", views.add_repairs, name="add_repairs"),
     url(r"^add_charge/$", views.add_charge, name="add_charge"),
     url(r"^del_charge/$", views.del_charge, name="del_charge"),
@@ -47,7 +53,9 @@ urlpatterns = [
     url(r"^code/$", views.code, name="code"),
     url(r"logout/$", views.logout, name="logout"),
 
-    # 添加宿舍走的ajax
+    # 添加楼层走的ajax
     url(r"^ajax_all_domain/(?P<dep>\d+)/$", views.ajax_all_domain, name="ajax_all_domain"),
+    # 添加宿舍走的ajax
+    url(r"^ajax_all_floor/(?P<tow_id>\d+)/$", views.ajax_all_floor, name="ajax_all_floor"),
 
 ]

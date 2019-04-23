@@ -270,7 +270,45 @@ def admin_list(request):
 
 
 def add_student(request):
-    pass
+    if request.method == "GET":
+        deps = models.Department.objects.all()
+        domains = models.Domain.objects.all()
+
+        return render(request, 'dormitory/add_student.html', {"deps": deps, "domains": domains})
+
+    else:
+        sno = request.POST["sno"].strip()
+        password = request.POST["password"].strip()
+        name = request.POST["name"].strip()
+        gender = request.POST["gender"]
+
+        if sno == "":
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：学号不能为空！"})
+        if password == "":
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：密码不能为空！"})
+        if name == "":
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：姓名不能为空！"})
+
+        try:
+            models.Student.objects.get(sno=sno)
+
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：该学号已存在！"})
+        except:
+
+            try:
+                password = utils.pwd_by_hmac(password)
+                student = models.Student(sno=sno, password=password, name=name, gender=gender)
+                student.save()
+                return render(request, 'dormitory/add_student.html', {"msg": "添加成功！"})
+            except Exception as e:
+                print("添加学生失败！", e)
+                return render(request, 'dormitory/add_student.html', {"error": "添加失败！"})
+
+
+def student_list(request):
+
+    students = models.Student.objects.all()
+    return render(request, 'dormitory/student_list.html', {"students": students})
 
 
 def del_student(request):
@@ -436,10 +474,27 @@ def add_floor(request):
             floor.save()
 
 
-            return render(request, "dormitory/add_floor.html", {"msg": "添加成功！"})
+            # return render(request, "dormitory/add_floor.html", {"msg": "添加成功！"})
+            return redirect(reverse("dormitory:add_floor"), {"msg": "添加成功！"})
         except Exception as e:
             print("-----error---", e)
             return render(request, "dormitory/add_floor.html", {"error": "该专业已存在，请重新添加！！"})
+
+
+def floor_list(request):
+    floors = models.Floor.objects.all()
+
+    return render(request, 'dormitory/floor_list.html', {"floors": floors})
+
+
+def del_floor(request, f_id):
+    try:
+        floor = models.Floor.objects.get(id=f_id)
+        floor.delete()
+        return redirect(reverse('dormitory:floor_list'), {"msg": "删除成功"})
+    except Exception as e:
+        print("删除楼层失败！")
+        return redirect(reverse('dormitory:floor_list'), {"msg": "删除失败！！"})
 
 
 def ajax_all_domain(request, dep):
@@ -458,13 +513,73 @@ def ajax_all_domain(request, dep):
         print("没有找到", e)
         return JsonResponse({"domains": domains, "issuccess": False})
 
+
+def ajax_all_floor(request, tow_id):
+    # 获取楼房对应的楼层
+    print(tow_id)
+    try:
+        tow = models.Tower.objects.get(id=tow_id)
+        floors = models.Floor.objects.filter(tower=tow.id)
+
+        domains = serialize("json", floors)
+        # print(domains)
+
+        return HttpResponse(domains)
+    except Exception as e:
+        print("没有找到", e)
+        return JsonResponse({"domains": floors, "issuccess": False})
+
+
 # 添加宿舍
 def add_dorm(request):
-    pass
+    if request.method == "GET":
+        towers = models.Tower.objects.all()
+        floor = models.Floor.objects.all()
+
+        return render(request, 'dormitory/add_dorm.html', {"towers": towers, "floor": floor})
+    else:
+        suno = request.POST["suno"].strip()
+        max_num = request.POST["max_num"]
+        peopel = request.POST["peopel"].strip()
+        floor = request.POST["floor"]
+        tower = request.POST["tower"]
+
+        tower = models.Tower.objects.get(id=tower)
+        floor = models.Floor.objects.get(id=floor)
+        max_num = max_num[:1]
+        sex = floor.sex
+        print(suno, max_num, peopel, floor, tower, sex)
+        try:
+            print(1)
+            dorm = models.Dorm(suno=suno, max_num=max_num, people=peopel, sex=sex, floor=floor, tower=tower)
+            dorm.save()
+            print("添加成功")
+            return redirect(reverse("dormitory:add_dorm"), {"msg": "添加成功！"})
+        except Exception as e:
+            print("添加宿舍信息出错:", e)
+            return redirect(reverse("dormitory:add_dorm"), {"msg": "添加失败！"})
 
 
-def del_dorm(request):
-    pass
+def dorm_list(request):
+    try:
+        dorms = models.Dorm.objects.all()
+        print(dorms)
+        return render(request, 'dormitory/dorm_list.html', {"dorms": dorms})
+    except Exception as e:
+        print("查询所有宿舍信息出错:", e)
+        return render(request, 'dormitory/dorm_list.html', {"msg": "查询失败！请重试！"})
+
+
+def del_dorm(request, d_id):
+
+    try:
+        dorm = models.Dorm.objects.get(id=d_id)
+
+        dorm.delete()
+        return redirect(reverse("dormitory:dorm_list"), {"msg": "删除成功！"})
+    except Exception as e:
+        print("删除宿舍失败！", e)
+        return redirect(reverse("dormitory:dorm_list"), {"msg": "删除失败！"})
 
 
 # 添加报修管理

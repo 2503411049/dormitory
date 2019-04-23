@@ -70,17 +70,17 @@ class Charge(models.Model):
 # 定义学生
 class Student(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="学生主键")
-    sno = models.IntegerField( unique=True, verbose_name="学号")
+    sno = models.CharField(unique=True, max_length=20, verbose_name="学号")
     password = models.CharField(max_length=100, verbose_name="密码")
     name = models.CharField(max_length=100, verbose_name="姓名")
     gender = models.CharField(max_length=20, verbose_name="性别")
-    age = models.IntegerField( verbose_name="年龄")
-    avatar = models.CharField(max_length=255, default='/static/blog/img/avatar08.jpg', verbose_name="头像")
+    age = models.IntegerField(default="18", verbose_name="年龄")
+    avatar = models.CharField(max_length=255, default='/static/dormitory/avatar/avatar08.jpg', verbose_name="头像")
     # 外键
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, verbose_name="所属系别")
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, null=True, verbose_name="所属专业")
 
-    tel = models.IntegerField( verbose_name="电话号码")
+    tel = models.IntegerField(null=True, verbose_name="电话号码")
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, null=True, verbose_name="所属楼房")
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE, null=True, verbose_name="所属楼层")
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, null=True, verbose_name="宿舍编号")
