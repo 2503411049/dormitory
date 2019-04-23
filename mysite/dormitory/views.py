@@ -289,6 +289,7 @@ def add_dep(request):
             dep = models.Department(dep_name=dep_name)
             dep.save()
             deps = models.Department.objects.all()
+            request.session["deps"] = deps
             return render(request, "dormitory/add_dep.html", {"msg": "添加成功！", "deps": deps})
         except Exception as e:
 
@@ -297,11 +298,12 @@ def add_dep(request):
 
 def dep_list(request):
     # 显示所有学院，并操作
-    if request.method == "GET":
-        deps = models.Department.objects.all()
-        return render(request, "dormitory/dep_list.html", {"deps": deps})
-    else:
-        pass
+    deps = models.Department.objects.all()
+    # 将所有学院名称存放在session中
+    request.session["deps"] = deps
+
+    return render(request, "dormitory/dep_list.html", {"deps": deps})
+
 
 def del_dep(request, d_id):
     try:
@@ -321,35 +323,140 @@ def add_domain(request):
         # domain = models.Domain.objects.all()
         return render(request, "dormitory/add_domain.html", {"deps": deps})
     else:
-        dep_name = request.POST["dep_name"].strip()
+        dep_name = request.POST["department"].strip()
+        dom_name = request.POST["dom_name"].strip()
+
 
         try:
-            dep = models.Department(dep_name=dep_name)
-            dep.save()
+
+            dep = models.Department.objects.get(dep_name = dep_name)
+            # print(dep.id)
+            domain = models.Domain(dom_name=dom_name, department=dep)
+
+            domain.save()
+
             deps = models.Department.objects.all()
+            domains = models.Domain.objects.all()
+            request.session["domains"] = domains
             return render(request, "dormitory/add_domain.html", {"msg": "添加成功！", "deps": deps})
         except Exception as e:
-
+            print("-----error---", e)
             return render(request, "dormitory/add_domain.html", {"error": "该专业已存在，请重新添加！！"})
 
 
-def del_domain(request):
-    pass
+def domain_list(request):
+    try:
+        deps = models.Department.objects.all()
+        domains = models.Domain.objects.all()
+        request.session["domains"] = domains
+        return render(request, 'dormitory/domain_list.html', {"domains": domains, "deps": deps})
+    except Exception as e:
+        print("查询全部专业出错：", e)
+        return render(request, 'dormitory/domain_list.html', {"msg": "当前没有专业。"})
+
+
+def del_domain(request, d_id):
+    try:
+        domain = models.Domain.objects.get(id=d_id)
+        domain.delete()
+        return redirect(reverse('dormitory:domain_list'), {"msg": "删除成功"})
+    except Exception as e:
+        print("删除学院失败！", e)
+        return redirect(reverse('dormitory:domain_list', {"msg": "删除失败！！"}))
 
 
 # 添加楼房
 def add_tower(request):
-    pass
+    if request.method == "GET":
+        try:
+            towers = models.Tower.objects.all()
+            return render(request, "dormitory/add_tower.html", {"towers": towers})
+        except Exception as e:
+            return render(request, "dormitory/add_tower.html", {"msg": "当前未添加楼房"})
+
+    else:
+        num = request.POST["num"].strip()
+        sex = request.POST["sex"]
+
+        try:
+            tower = models.Tower(num=num, sex=sex)
+            tower.save()
+            towers = models.Tower.objects.all()
+            request.session["towes"] = towers
+            return render(request, "dormitory/add_tower.html", {"msg": "添加成功！", "towers": towers})
+        except Exception as e:
+
+            return render(request, "dormitory/add_tower.html", {"error": "该楼房信息已存在，请重新添加！！"})
 
 
-def del_tower(request):
-    pass
+def tower_list(request):
+    try:
+        towers = models.Tower.objects.all()
+        request.session["towes"] = towers
+        return render(request, "dormitory/tower_list.html", {"towers": towers})
+    except Exception as e:
+        return render(request, "dormitory/tower_list.html", {"msg": "未添加楼房信息"})
+
+
+def del_tower(request, t_id):
+    try:
+        tower = models.Tower.objects.get(id=t_id)
+        tower.delete()
+        return redirect(reverse('dormitory:tower_list'), {"msg": "删除成功"})
+    except Exception as e:
+        print("删除楼房信息失败！", e)
+        return redirect(reverse('dormitory:tower_list', {"msg": "删除失败！！"}))
 
 
 # 添加楼层
 def add_floor(request):
-    pass
+    if request.method == "GET":
+        towers = models.Tower.objects.all()
+        deps = models.Department.objects.all()
+        domains = models.Domain.objects.all()
 
+
+        return render(request, "dormitory/add_floor.html", {"towers": towers, "deps": deps, "domains": domains})
+    else:
+        con = request.POST["con"].strip()
+        department = request.POST["department"].strip()
+        domain = request.POST["domain"].strip()
+        tower = request.POST["tower"].strip()
+        print(con, department, domain, tower)
+
+        try:
+
+            dep = models.Department.objects.get(id=department)
+            domain = models.Domain.objects.get(id=domain)
+            tower = models.Tower.objects.get(num=tower)
+            sex = tower.sex
+
+            floor = models.Floor(con=con, sex=sex, department=dep, domain=domain, tower=tower)
+
+            floor.save()
+
+
+            return render(request, "dormitory/add_floor.html", {"msg": "添加成功！"})
+        except Exception as e:
+            print("-----error---", e)
+            return render(request, "dormitory/add_floor.html", {"error": "该专业已存在，请重新添加！！"})
+
+
+def ajax_all_domain(request, dep):
+    # 获取学院对应的字段
+    print(dep)
+    try:
+        dep = models.Department.objects.get(id=dep)
+        domains = models.Domain.objects.filter(department=dep.id)
+
+        domains = serialize("json", domains)
+        print(domains)
+        # return JsonResponse({"domains": domains, "issuccess": True})
+        # return JsonResponse(domains,safe=False)
+        return HttpResponse(domains)
+    except Exception as e:
+        print("没有找到", e)
+        return JsonResponse({"domains": domains, "issuccess": False})
 
 # 添加宿舍
 def add_dorm(request):

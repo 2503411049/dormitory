@@ -21,12 +21,12 @@ class Domain(models.Model):
 class Tower(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="楼房主键")
     num = models.CharField(max_length=20, unique=True, verbose_name="楼房编号")
-
+    sex = models.CharField(max_length=50, default="男", verbose_name="楼房性别")
 
 # 定义楼层
 class Floor(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="楼层主键")
-    con = models.CharField(max_length=20, unique=True, verbose_name="楼层编号")
+    con = models.CharField(max_length=20, verbose_name="楼层编号")
     sex = models.CharField(max_length=50, default="男", verbose_name="宿舍性别")
     # 外键
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, verbose_name="所属楼房")

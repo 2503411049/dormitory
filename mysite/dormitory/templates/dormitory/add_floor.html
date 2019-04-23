@@ -1,0 +1,112 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}添加楼层信息{% endblock %}
+{% block content_title %}
+添加楼层信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:add_floor' %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>楼房：
+                <select name="tower" style="width: 174px;">
+                    <option >---全部---</option>
+                     {% for tower in towers %}
+                        <option >{{tower.num}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>楼层：
+                <select name="con" style="width: 174px;">
+                    <option >1层</option>
+                    <option >2层</option>
+                    <option >3层</option>
+                    <option >4层</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>学院：
+                <select name="department" id="dep" style="width: 174px;">
+                    <option>---全部---</option>
+                     {% for dep in deps %}
+                        <option value="{{dep.id}}" >{{dep.dep_name}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>专业：
+                <select name="domain" id="domain" style="width: 174px;">
+                    <option >---全部---</option>
+<!--                     {% for domain in domains %}-->
+<!--                        <option >{{domain.dom_name}}</option>-->
+<!--                     {% empty %}-->
+<!--                        <option >-&#45;&#45;无-&#45;&#45;</option>-->
+<!--                     {% endfor %}-->
+
+                </select>
+            </td>
+        </tr>
+
+        <tr class="text-center">
+             <td><input type="submit" value="添加" class="btn btn-primary ">&nbsp&nbsp&nbsp&nbsp{{msg}}</td>
+        </tr>
+    </table>
+</form>
+
+
+<script>
+    $(function(){
+
+        $("#dep").change(function () {
+
+            let $dep = $("#dep").val()
+
+            if ($dep == "---全部---"){
+
+                alert("请选择学院")
+            }else {
+
+                $.ajax({
+					url:"/dormitory/ajax_all_domain/"+$dep,
+					type:"get",
+					dataType:"json",
+					success:function(data){
+					    // 清空
+					    $("#domain").empty()
+					    console.log(data)
+                        // $("$domain").html(data[1].dom_name)
+                        for (var i = 0; i<data.length; i++ ){
+                            var dom = data[i];
+                            $option = $("<option>")
+                            $option.attr("value", dom.pk)
+                            $option.text(dom.fields.dom_name)
+                            $("#domain").append($option)
+
+                        }
+
+					},
+                    error:function () {
+                        alert("失败了")
+                    }
+				})
+
+            }
+
+        });
+
+    })
+</script>
+{% endblock %}

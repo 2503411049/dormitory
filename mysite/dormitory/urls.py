@@ -19,10 +19,14 @@ urlpatterns = [
     url(r"^add_dep/$", views.add_dep, name="add_dep"),
     url(r"^dep_list/$", views.dep_list, name="dep_list"),
     url(r"^del_dep/(?P<d_id>\d+)/$", views.del_dep, name="del_dep"),
+
     url(r"^add_domain/$", views.add_domain, name="add_domain"),
-    url(r"^del_domain/$", views.del_domain, name="del_domain"),
+    url(r"^domain_list/$", views.domain_list, name="domain_list"),
+    url(r"^del_domain/(?P<d_id>\d+)/$", views.del_domain, name="del_domain"),
+
     url(r"^add_tower/$", views.add_tower, name="add_tower"),
-    url(r"^del_tower/$", views.del_tower, name="del_tower"),
+    url(r"^tower_list/$", views.tower_list, name="tower_list"),
+    url(r"^del_tower/(?P<t_id>\d+)/$", views.del_tower, name="del_tower"),
     url(r"^add_floor/$", views.add_floor, name="add_floor"),
     url(r"^add_dorm/$", views.add_dorm, name="add_dorm"),
     url(r"^del_dorm/$", views.del_dorm, name="del_dorm"),
@@ -40,7 +44,10 @@ urlpatterns = [
     url(r"^del_suggest/$", views.del_suggest, name="del_suggest"),
 
     # 验证码
-    url(r"^code", views.code, name="code"),
-    url(r"logout", views.logout, name="logout")
+    url(r"^code/$", views.code, name="code"),
+    url(r"logout/$", views.logout, name="logout"),
+
+    # 添加宿舍走的ajax
+    url(r"^ajax_all_domain/(?P<dep>\d+)/$", views.ajax_all_domain, name="ajax_all_domain"),
 
 ]

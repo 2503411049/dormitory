@@ -1,0 +1,70 @@
+{% extends 'dormitory/base.html' %}
+
+{% load static %}
+{% block title %}专业管理{% endblock %}
+
+
+{% block content_title %}
+专业管理
+{% endblock %}
+
+
+<!--搜素栏-->
+{% block query %}
+<tr class="query">
+    <td colspan="9">
+        <form action="" method="post">
+
+            学院：<select name="domain">
+                    <option >--全部--</option>
+                    {% for dep in deps %}
+                        <option >{{dep.dep_name}}</option>
+                    {% empty %}
+                        <option >---该学院暂无专业---</option>
+                    {% endfor %}
+                </select>
+            <a href="#" class="btn btn-primary select_all" id="search" ><p>搜索</p></a>
+        </form>
+    </td>
+</tr>
+
+{% endblock %}
+
+
+
+<!-- 内容详情-->
+{% block text-center %}
+
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>学院</td>
+        <td>专业</td>
+        <td>操作</td>
+
+    </tr>
+
+    {% for domain in domains %}
+    <tr class="text-center">
+
+       <td>{{ forloop.counter }}</td>
+       <td>{{ domain.department.dep_name }}</td>
+       <td>{{ domain.dom_name }}</td>
+        <td class="text-center">
+<!--            <a href="#"  ><img src="{% static 'dormitory/img/edit.png' %}" alt="修改"></a>-->
+            <a href="{% url 'dormitory:del_domain' domain.id %}"  onclick="return window.confirm('您确定要删除该专业吗？');" ><img src="{% static 'dormitory/img/del.png' %}" alt="删除"></a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+<!--<script>-->
+<!--    $("#search").click()-->
+
+
+<!--</script>-->
+
+{% endblock %}

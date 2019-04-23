@@ -87,16 +87,16 @@
 
 					<dl class="app">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Domain.png' %}" >专业管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加专业</a></dd>
-						<dd><a href="#">管理专业</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_domain' %}">添加专业</a></dd>
+						<dd><a href="{% url 'dormitory:domain_list' %}">管理专业</a></dd>
 
 					</dl>
 
 					<dl class="cloud">
 						<dt><img class="login_left" src="{% static 'dormitory/img/Dorm.png' %}">宿舍管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加楼房信息</a></dd>
-						<dd><a href="#">管理楼房信息</a></dd>
-						<dd><a href="#">添加楼层信息</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_tower' %}">添加楼房信息</a></dd>
+						<dd><a href="{% url 'dormitory:tower_list' %}">管理楼房信息</a></dd>
+						<dd><a href="{% url 'dormitory:add_floor' %}">添加楼层信息</a></dd>
 						<dd><a href="#">管理楼层信息</a></dd>
 						<dd><a href="#">添加宿舍信息</a></dd>
 						<dd><a href="#">管理宿舍信息</a></dd>
