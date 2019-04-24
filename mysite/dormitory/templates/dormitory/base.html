@@ -106,7 +106,7 @@
 						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >学生管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
 						<dd class="first_dd"><a href="{% url 'dormitory:add_student' %}">添加学生信息</a></dd>
 						<dd><a href="{% url 'dormitory:student_list' %}">管理学生信息</a></dd>
-						<dd><a href="#">分配宿舍</a></dd>
+						<dd><a href="{% url 'dormitory:allot_dorm' %}">分配宿舍</a></dd>
 
 					</dl>
 

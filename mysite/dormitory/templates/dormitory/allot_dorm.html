@@ -1,0 +1,143 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}学生宿舍分配{% endblock %}
+{% block content_title %}
+学生宿舍分配
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+    <tr class="text-center">
+        <td><span style="color: red">{{error1}}</span></td>
+
+    </tr>
+
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:allot_dorm' %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>学号：
+                <select name="student" id="student" style="width: 174px;">
+                     {% for student in students %}
+                        <option value="{{student.id}}" >{{student.sno}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+
+            </td>
+        </tr>
+
+<!--        <tr class="text-center">-->
+<!--            <td>姓名：<input type="text" name="name">-->
+
+<!--            </td>-->
+<!--        </tr>-->
+
+<!--        <tr class="text-center">-->
+<!--            <td>性别：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+<!--                <input type="radio" name="gender" value="男" checked >男-->
+<!--                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+<!--                <input type="radio" name="gender" value="女">女-->
+<!--                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+<!--            </td>-->
+<!--        </tr>-->
+
+        <tr class="text-center">
+            <td>宿舍楼：
+                <select name="tower" id="tower" style="width: 174px;">
+                     {% for tower in towers %}
+                        <option value="{{tower.id}}" >{{tower.num}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+
+        <tr class="text-center">
+            <td>楼层：
+                <select name="floor" id="floor" style="width: 174px;">
+                    <option>---全部---</option>
+                     {% for floor in floors %}
+                        <option value="{{floor.id}}" >{{floor.con}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+
+        <tr class="text-center">
+            <td>宿舍：
+                <select name="dorm" id="dorm" style="width: 174px;">
+                    <option>---全部---</option>
+                     {% for dorm in dorms %}
+                        <option value="{{dorm.id}}" >{{dorm.suno}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+
+
+        </tr>
+        <tr class="text-center">
+             <td>
+                 <input type="submit" value="分配宿舍" class="btn btn-primary ">
+                 &nbsp&nbsp&nbsp&nbsp
+                 {{msg}}
+                 <span style="color: red">{{error}}</span>
+             </td>
+        </tr>
+    </table>
+</form>
+
+
+<!--<script>-->
+<!--    $(function(){-->
+
+<!--        $("#dep").change(function () {-->
+
+<!--            let $dep = $("#dep").val()-->
+
+<!--            if ($dep == "-&#45;&#45;全部-&#45;&#45;"){-->
+
+<!--                alert("请选择学院")-->
+<!--            }else {-->
+
+<!--                $.ajax({-->
+<!--					url:"/dormitory/ajax_all_domain/"+$dep,-->
+<!--					type:"get",-->
+<!--					dataType:"json",-->
+<!--					success:function(data){-->
+<!--					    // 清空-->
+<!--					    $("#domain").empty()-->
+<!--					    console.log(data)-->
+<!--                        // $("$domain").html(data[1].dom_name)-->
+<!--                        for (var i = 0; i<data.length; i++ ){-->
+<!--                            var dom = data[i];-->
+<!--                            $option = $("<option>")-->
+<!--                            $option.attr("value", dom.pk)-->
+<!--                            $option.text(dom.fields.dom_name)-->
+<!--                            $("#domain").append($option)-->
+
+<!--                        }-->
+
+<!--					},-->
+<!--                    error:function () {-->
+<!--                        alert("失败了")-->
+<!--                    }-->
+<!--				})-->
+
+<!--            }-->
+
+<!--        });-->
+
+<!--    })-->
+<!--</script>-->
+
+{% endblock %}

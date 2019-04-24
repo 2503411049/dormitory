@@ -15,8 +15,11 @@ urlpatterns = [
     url(r"^reset_admin/(?P<a_id>\d+)/$", views.reset_admin, name="reset_admin"),
 
     url(r"^add_student/$", views.add_student, name="add_student"),
+    url(r"^edit_student/(?P<s_id>\d+)/$", views.edit_student, name="edit_student"),
     url(r"^student_list/$", views.student_list, name="student_list"),
-    url(r"^del_student/$", views.del_student, name="del_student"),
+    url(r"^allot_dorm/$", views.allot_dorm, name="allot_dorm"),
+
+    url(r"^del_student/(?P<s_id>\d+)/$", views.del_student, name="del_student"),
     url(r"^add_dep/$", views.add_dep, name="add_dep"),
     url(r"^dep_list/$", views.dep_list, name="dep_list"),
     url(r"^del_dep/(?P<d_id>\d+)/$", views.del_dep, name="del_dep"),
@@ -57,5 +60,7 @@ urlpatterns = [
     url(r"^ajax_all_domain/(?P<dep>\d+)/$", views.ajax_all_domain, name="ajax_all_domain"),
     # 添加宿舍走的ajax
     url(r"^ajax_all_floor/(?P<tow_id>\d+)/$", views.ajax_all_floor, name="ajax_all_floor"),
+
+
 
 ]

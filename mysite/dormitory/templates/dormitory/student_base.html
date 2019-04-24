@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>{% block title %}宿舍管理系统后台{% endblock %}</title>
+
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/bootstrap.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'dormitory/css/index.css' %}"/>
+
+		<script src="{% static 'dormitory/js/jquery-1.12.4.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'dormitory/js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'dormitory/js/index.js' %}" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<!-- 导航栏 -->
+        {% block nav %}
+		<div class="nav">
+			<div class="tit_info">
+				<p class="title ">中州大学宿舍管理系统</p>
+			</div>
+			<div class="right_nav">
+				<table>
+					<tr>
+                        {% if ID == "学生" %}
+                        <td class="td_admin">{{ ID }}</td>
+						<td class="td_info" id="show">{{request.session.Student.name}}<img src="{% static 'dormitory/img/drop-down.png' %}" ></td>
+						<td class="td_img" id="skin"><img src="{% static 'dormitory/img/clothes1.png' %}" ></td>
+
+                        {% endif %}
+
+                    </tr>
+
+				</table>
+				<div class="info">
+					<table>
+						<tr class="info_tr">
+							<td><a href="#">查看资料</a></td>
+						</tr>
+						<tr class="info_tr">
+							<td><a href="#">修改密码</a></td>
+						</tr>
+						<tr class="info_tr">
+							<td><a href="{% url 'dormitory:logout' %}">退出系统</a></td>
+						</tr>
+					</table>
+				</div>
+				<div class="skin">
+					<ul>
+						<li><img src="{% static 'dormitory/img/skin_black.png' %}" id="skin_black" ></li>
+					</ul>
+					<ul>
+						<li><img src="{% static 'dormitory/img/skin_plant.png' %}" id="skin_plant" ></li>
+					</ul>
+					<ul>
+						<li><img src="{% static 'dormitory/img/skin_red.png' %}" id="skin_red" ></li>
+					</ul>
+				</div>
+
+			</div>
+            {% endblock %}
+
+		</div>
+		<!-- 内容 -->
+		<div class="content">
+			<!-- 左侧导航 -->
+            {% block left_nav %}
+			<div class="left_nav">
+				<div class="menus_area" id="menus_area">
+
+					<dl class="custom">
+						<dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >查看公告信息</dt>
+
+					</dl>
+
+
+					<dl class="syetem_management">
+						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >个人信息<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+					    <dd class="first_dd"><a href="#">查看个人信息</a></dd>
+                        <dd class="first_dd"><a href="#">修改个人信息</a></dd>
+                    </dl>
+
+					<dl class="statistics">
+						<dt><img class="login_left" src="{% static 'dormitory/img/repairs.png' %}" >报修管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+						<dd class="first_dd"><a href="#">添加报修信息</a></dd>
+					</dl>
+					<dl class="idea">
+						<dt><img class="login_left" src="{% static 'dormitory/img/idea.png' %}" >意见管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+						<dd class="first_dd"><a href="#">添加意见信息</a></dd>
+					</dl>
+
+                    <dl class="water">
+						<dt><img class="login_left" src="{% static 'dormitory/img/Charge.png' %}" >查询水电费</dt>
+					</dl>
+				</div>
+
+			</div>
+            {% endblock %}
+			<!-- 内容部分 -->
+            {% block right_content %}
+			<div class="right_content">
+				<div class="con_title">
+
+					<div class="p">
+						<p>{% block content_title %}管理学生信息{% endblock %}</p>
+					</div>
+
+				</div>
+                {% block details %}
+				<div class="details">
+					<table class="table table-hover table-bordered table-striped">
+                        {% block query %}
+<!--						<tr class="query">-->
+<!--							<td colspan="9">-->
+<!--								<form action="" method="">-->
+<!--									系别：<select name="department">-->
+<!--											<option >&#45;&#45;全部&#45;&#45;</option>-->
+<!--											<option >信息工程学院</option>-->
+<!--											<option >机电工程</option>-->
+<!--										</select>-->
+
+<!--									专业：<select name="domain">-->
+<!--											<option >&#45;&#45;全部&#45;&#45;</option>-->
+<!--											<option >计算机信息管理</option>-->
+<!--											<option >计算机网络</option>-->
+<!--										</select>-->
+<!--									学号：<input type="text">-->
+<!--									姓名：<input type="text">-->
+<!--									<a href="#" class="btn btn-primary select_all" ><p>搜索</p></a>-->
+<!--								</form>-->
+<!--							</td>-->
+<!--						</tr>-->
+                        {% endblock %}
+                        {% block text-center %}
+<!--                        <tr class="text-center">-->
+<!--                            <td>编号</td>-->
+<!--                            <td>学号</td>-->
+<!--                            <td>姓名</td>-->
+<!--                            <td>性别</td>-->
+<!--                            <td>系别</td>-->
+<!--							<td>专业</td>-->
+<!--							<td>手机号</td>-->
+<!--							<td>宿舍编号</td>-->
+<!--							<td>操作</td>-->
+<!--                        </tr>-->
+                        {% endblock %}
+
+
+
+                    </table>
+
+
+				</div>
+                {% endblock %}
+
+
+			</div>
+            {% endblock %}
+		</div>
+		<!-- 底部 -->
+        {% block end %}
+		<div class="end">
+		</div>
+        {% endblock %}
+	</body>
+</html>

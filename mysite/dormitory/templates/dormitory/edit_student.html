@@ -1,0 +1,168 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}修改学生信息{% endblock %}
+{% block content_title %}
+修改学生信息
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+    <tr class="text-center">
+        <td><span style="color: red">{{error1}}</span></td>
+
+    </tr>
+
+{% endblock %}
+<!-- 内容详情-->
+{% block text-center %}
+<form action="{% url 'dormitory:edit_student' student.id %}" method="post">
+        {% csrf_token %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>学号：
+                <input type="number" name="sno" disabled value="{{ student.sno }}">
+
+            </td>
+        </tr>
+<!--        <tr class="text-center">-->
+<!--            <td>密码：-->
+<!--                <input type="password" name="password" id="password" >-->
+
+<!--            </td>-->
+<!--        </tr>-->
+        <tr class="text-center">
+            <td>姓名：<input type="text" name="name" value="{{ student.name }}" id="name">
+
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>学院：
+                <select name="department" id="dep"   >
+                    <option>{{ student.department.deo_name }}</option>
+                     {% for dep in deps %}
+                        <option value="{{dep.id}}" >{{dep.dep_name}}</option>
+                     {% empty %}
+                        <option >---无---</option>
+                     {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>专业：
+                <select name="domain" id="domain" >
+                    <option >{{ student.domain.dom_name }}</option>
+<!--                     {% for domain in domains %}-->
+<!--                        <option >{{domain.dom_name}}</option>-->
+<!--                     {% empty %}-->
+<!--                        <option >-&#45;&#45;无-&#45;&#45;</option>-->
+<!--                     {% endfor %}-->
+
+                </select>
+            </td>
+        </tr>
+        <tr class="text-center">
+            <td>性别：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                {% if student.gender == "男" %}
+                    <input type="radio" name="gender" value="男" checked >男
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <input type="radio" name="gender" value="女">女
+                {% else %}
+                    <input type="radio" name="gender" value="男"  >男
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <input type="radio" name="gender" value="女" checked>女
+                {% endif %}
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            </td>
+        </tr>
+        <tr class="text-center">
+             <td>
+                 <a href="{% url 'dormitory:student_list' %}" class="btn btn-danger">取消修改</a>
+                 <input type="submit" value="确认修改" id="submit" class="btn btn-primary ">
+                 &nbsp&nbsp&nbsp&nbsp
+                 {{msg}}
+                 <span style="color: red">{{error}}</span>
+             </td>
+        </tr>
+    </table>
+</form>
+
+
+<script>
+    $(function(){
+
+        $("#dep").change(function () {
+
+            let $dep = $("#dep").val()
+
+            if ($dep == ""){
+
+                alert("请选择学院")
+            }else {
+
+                $.ajax({
+					url:"/dormitory/ajax_all_domain/"+$dep,
+					type:"get",
+					dataType:"json",
+					success:function(data){
+					    // 清空
+					    $("#domain").empty()
+					    console.log(data)
+                        // $("$domain").html(data[1].dom_name)
+                        for (var i = 0; i<data.length; i++ ){
+                            var dom = data[i];
+                            $option = $("<option>")
+                            $option.attr("value", dom.pk)
+                            $option.text(dom.fields.dom_name)
+                            $("#domain").append($option)
+
+                        }
+
+					},
+                    error:function () {
+                        alert("网路异常，请重试！")
+                    }
+				})
+
+            }
+
+        });
+
+
+    //    验证
+        $("#submit").mousemove(function () {
+
+            let $pwd = $("#password").val()
+            if ($pwd == ""){
+
+                alert("密码不能为空！")
+            }else {
+                let $name = $("#name").val()
+                if ($name == ""){
+
+                    alert("姓名不能为空！")
+                }else {
+
+                    let $dep = $("#dep").val()
+                    if ($dep == ""){
+
+                        alert("学院不能为空！")
+                    }else {
+
+                        let $domain = $("#domain").val()
+                        if ($domain == ""){
+
+                            alert("专业不能为空！")
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+        })
+
+    })
+</script>
+
+{% endblock %}

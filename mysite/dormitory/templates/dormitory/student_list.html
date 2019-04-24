@@ -55,16 +55,40 @@
         <td>{{ student.sno }}</td>
         <td>{{ student.name }}</td>
         <td>{{ student.gender }}</td>
+        {% if student.department.dep_name == null %}
+        <td><a href="{% url 'dormitory:edit_student' student.id %}">--未分配--</a></td>
+        {% else %}
         <td>{{ student.department.dep_name }}</td>
+        {% endif %}
+
+        {% if student.domain.dom_name == null %}
+        <td><a href="{% url 'dormitory:edit_student' student.id %}">--未分配--</a></td>
+        {% else %}
         <td>{{ student.domain.dom_name }}</td>
+        {% endif %}
+
+        {% if student.tower.num == null %}
+        <td><a href="#">--未分配--</a></td>
+        {% else %}
         <td>{{ student.tower.num }}</td>
+        {% endif %}
+
+        {% if student.floor.con == null %}
+        <td><a href="#">--未分配--</a></td>
+        {% else %}
         <td>{{ student.floor.con }}</td>
+        {% endif %}
+
+        {% if student.dorm.suno == null %}
+        <td><a href="#">--未分配--</a></td>
+        {% else %}
         <td>{{ student.dorm.suno }}</td>
+        {% endif %}
         <td>{{ student.tel }}</td>
         <td class="text-center">
 
-            <a onclick="return window.confirm('您确定要删除该文章吗？');" href="#" class="btn btn-danger">删除</a>
-            <a href="#" class="btn btn-warning" >修改</a>
+            <a href="{% url 'dormitory:del_student' student.id %}" onclick="return window.confirm('您确定要删除该学生的所有信息吗？');"  class="btn btn-danger">删除</a>
+            <a href="{% url 'dormitory:edit_student' student.id %}" class="btn btn-warning" >修改</a>
             <a href="#" class="btn btn-primary" >查看</a>
         </td>
 

@@ -57,7 +57,7 @@ def login(request):
         code = request.POST.get("code", None)
         user = request.POST.get("user")
         msg = request.session["code"]
-        print(user)
+        print("---", name, password, user)
 
         if code:
             if msg.lower() != code.lower():
@@ -70,11 +70,10 @@ def login(request):
         if password == "":
             return render(request, 'dormitory/login.html', {"msg": "密码不能为空！！"})
 
-
         try:
             # 判断用户是管理员还是学生
             if user == "admin":
-
+                # 管理员登录
                 admin = models.Admin.objects.get(account=name)
                 # 密码加密
                 password = utils.pwd_by_hmac(password)
@@ -82,19 +81,24 @@ def login(request):
                     # 登录成功
                     # 通过session存储对象必须序列化,修改配置文件
                     request.session["Admin"] = admin
-                    return redirect('/dormitory/index', {"msg":"登录成功"})
+                    # return render('/dormitory/index.html', {"msg":"登录成功"})
+                    request.session["Login"] = "admin"
+                    return render(request, 'dormitory/index.html', {"ID": "管理员"})
                 else:
                     print("登录失败")
                     return render(request, 'dormitory/index.html', {"msg": "密码错误！！"})
             else:
-                student = models.Student.get(son=name)
+                # 学生登录
+                student = models.Student.objects.get(sno=name)
                 # 密码加密
                 password = utils.pwd_by_hmac(password)
                 if password == student.password:
                     # 登录成功
                     # 通过session存储对象必须序列化,修改配置文件
-                    request.session["Admin"] = student
-                    return redirect('/dormitory/index', {"msg": "登录成功"})
+                    request.session["Student"] = student
+                    request.session["Login"] = "student"
+                    return render(request, 'dormitory/student_base.html',{"ID": "学生"})
+
                 else:
                     print("登录失败")
                     return render(request, 'dormitory/index.html', {"msg": "密码错误！！"})
@@ -254,12 +258,9 @@ def reset_admin(request, a_id):
     password = utils.pwd_by_hashlib(password)
     admin.password = password
     admin.save()
-    print("1")
-
     # return redirect(reverse('dormitory:admin_list', {"msg": "重置成功！"}))
     admins = models.Admin.objects.all()
     return render(request, 'dormitory/admin_list.html', {"admins": admins, "msg":"重置成功!"})
-
 
 
 def admin_list(request):
@@ -267,20 +268,23 @@ def admin_list(request):
     return render(request, 'dormitory/admin_list.html', {"admins": admins})
 
 
-
-
 def add_student(request):
     if request.method == "GET":
         deps = models.Department.objects.all()
-        domains = models.Domain.objects.all()
 
-        return render(request, 'dormitory/add_student.html', {"deps": deps, "domains": domains})
+        return render(request, 'dormitory/add_student.html', {"deps": deps})
 
     else:
         sno = request.POST["sno"].strip()
         password = request.POST["password"].strip()
         name = request.POST["name"].strip()
         gender = request.POST["gender"]
+        department = request.POST["department"]
+        domain = request.POST["domain"]
+
+        print(sno, password, name, gender, department, domain)
+        department = models.Department.objects.get(id=department)
+        domain = models.Domain.objects.get(id=domain)
 
         if sno == "":
             return render(request, 'dormitory/add_student.html', {"error1": "提示信息：学号不能为空！"})
@@ -288,6 +292,10 @@ def add_student(request):
             return render(request, 'dormitory/add_student.html', {"error1": "提示信息：密码不能为空！"})
         if name == "":
             return render(request, 'dormitory/add_student.html', {"error1": "提示信息：姓名不能为空！"})
+        if domain =="":
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：专业信息不能为空！"})
+        if department == "---全部---":
+            return render(request, 'dormitory/add_student.html', {"error1": "提示信息：请选择学院信息！"})
 
         try:
             models.Student.objects.get(sno=sno)
@@ -297,7 +305,7 @@ def add_student(request):
 
             try:
                 password = utils.pwd_by_hmac(password)
-                student = models.Student(sno=sno, password=password, name=name, gender=gender)
+                student = models.Student(sno=sno, password=password, name=name, gender=gender, department=department, domain=domain)
                 student.save()
                 return render(request, 'dormitory/add_student.html', {"msg": "添加成功！"})
             except Exception as e:
@@ -311,8 +319,87 @@ def student_list(request):
     return render(request, 'dormitory/student_list.html', {"students": students})
 
 
-def del_student(request):
-    pass
+def del_student(request, s_id):
+    try:
+        student = models.Student.objects.get(id=s_id)
+        student.delete()
+        return redirect(reverse('dormitory:student_list'), {"msg": "删除成功"})
+    except Exception as e:
+        print("删除学生信息失败！！", e)
+        return redirect(reverse('dormitory:student_list'), {"msg": "删除失败！"})
+
+
+def edit_student(request, s_id):
+    if request.method == "GET":
+        try:
+            deps = models.Department.objects.all()
+            student = models.Student.objects.get(id=s_id)
+
+            return render(request, 'dormitory/edit_student.html', {"student": student, "deps": deps})
+        except Exception as e:
+            print("-------", e)
+
+    else:
+        # password = request.POST["password"].strip()
+        name = request.POST["name"].strip()
+        gender = request.POST["gender"]
+        department = request.POST["department"]
+        domain = request.POST["domain"]
+
+        department = models.Department.objects.get(id=department)
+        domain = models.Domain.objects.get(id=domain)
+
+        try:
+            # password = utils.pwd_by_hmac(password)
+            student = models.Student.objects.get(id=s_id)
+            # student.password = password
+            student.name = name
+            student.department = department
+            student.domain = domain
+            student.gender = gender
+            student.save()
+            return redirect(reverse('dormitory:student_list'))
+            # return render(request, 'dormitory/student_list.html', {"msg": "修改成功！"})
+        except Exception as e:
+            print("修改学生信息失败！", e)
+            # return render(request, 'dormitory/student_list.html', {"error": "修改失败！"})
+            return redirect(reverse('dormitory:student_list'))
+
+
+# 分配宿舍
+def allot_dorm(request):
+    if request.method == "GET":
+
+        # deps = models.Department.objects.all()
+        towers = models.Tower.objects.all()
+        floors = models.Floor.objects.all()
+        students = models.Student.objects.filter(dorm=None )
+        dorms = models.Dorm.objects.all()
+        # return render(request, 'dormitory/student_list.html', {"students": students, "deps": deps})
+
+        return render(request, 'dormitory/allot_dorm.html', {"students":students, "dorms": dorms, "towers": towers, "floors":floors})
+    else:
+        student = request.POST["student"]
+        tower = request.POST["tower"]
+        floor = request.POST["floor"]
+        dorm = request.POST["dorm"]
+
+        print("1",student, tower, floor, dorm)
+
+        student = models.Student.objects.get(id=student)
+        tower = models.Tower.objects.get(id=tower)
+        floor = models.Floor.objects.get(id=floor)
+        dorm = models.Dorm.objects.get(id=dorm)
+        print("2", student, tower, floor, dorm)
+        try:
+            student.tower = tower
+            student.floor = floor
+            student.dorm = dorm
+            student.save()
+
+            return redirect(reverse('dormitory:allot_dorm'))
+        except Exception as e:
+            print("分配宿舍失败！",e)
 
 
 # 添加系别
@@ -642,8 +729,10 @@ def show_notice(request, n_id):
     # 显示公告内容
     try:
         notice = models.Notice.objects.get(id=n_id)
-
-        return render(request, 'dormitory/show_notice.html', {"notice": notice})
+        if request.session.get("Login") == "admin":
+            return render(request, 'dormitory/show_notice.html', {"notice": notice})
+        if request.session.get("Login") == "student":
+            return render(request, 'dormitory/student_notice.html', {"notice": notice})
     except Exception as e:
         print("出错了", e)
         return redirect(reverse("dormitory:notice_list"))
@@ -704,3 +793,8 @@ def add_suggest(request):
 
 def del_suggest(request):
     pass
+
+# 学生查看公告信息
+def show_notice(request):
+    notices = models.Notice.objects.all()
+    return render(request, 'dormitory/show_notice', {"notices": notices})
