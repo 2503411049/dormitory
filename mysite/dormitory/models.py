@@ -47,14 +47,6 @@ class Dorm(models.Model):
     sex = models.CharField(max_length=50, default="男", verbose_name="宿舍性别")
 
 
-# 定义报修
-class Repairs(models.Model):
-    id = models.AutoField(primary_key=True, verbose_name="宿舍主键")
-    # 外键
-    dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, verbose_name="宿舍编号")
-    content = models.TextField(max_length=500, verbose_name="报修内容")
-    date_time = models.DateField(auto_now_add=True, verbose_name="报修时间")
-    flag = models.CharField(max_length=50, default="待维修", verbose_name="维修状态")
 
 
 # 定义水电
@@ -80,7 +72,7 @@ class Student(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, verbose_name="所属系别")
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, null=True, verbose_name="所属专业")
 
-    tel = models.IntegerField(null=True, verbose_name="电话号码")
+    tel = models.CharField(null=True, max_length=11, verbose_name="电话号码")
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE, null=True, verbose_name="所属楼房")
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE, null=True, verbose_name="所属楼层")
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, null=True, verbose_name="宿舍编号")
@@ -94,6 +86,7 @@ class Suggest(models.Model):
     content = models.TextField(max_length=500, verbose_name="意见内容")
     date_time = models.DateField(auto_now_add=True, verbose_name="提交时间")
     reply = models.CharField(max_length=200, null=True, verbose_name="回复")
+    anonymity = models.CharField(max_length=5, null=True, verbose_name="是否匿名")
 
 
 # 定义管理员
@@ -112,3 +105,13 @@ class Notice(models.Model):
     content = models.TextField(verbose_name="内容")
     publishTime = models.DateTimeField(auto_now_add=True, verbose_name="发表时间")
     count = models.IntegerField(default=0, verbose_name="点击量")
+
+# 定义报修
+class Repairs(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name="宿舍主键")
+    # 外键
+    dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE, verbose_name="宿舍编号")
+    content = models.TextField(max_length=500, verbose_name="报修内容")
+    date_time = models.DateField(auto_now_add=True, verbose_name="报修时间")
+    flag = models.CharField(max_length=50, default="0", verbose_name="维修状态")
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE, verbose_name="报修人")

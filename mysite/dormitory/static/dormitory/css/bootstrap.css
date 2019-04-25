@@ -1143,12 +1143,14 @@ img {
 .img-circle {
   border-radius: 50%;
 }
-hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 0;
-  border-top: 1px solid #eee;
-}
+
+/*hr {*/
+/*  margin-top: 20px;*/
+/*  margin-bottom: 20px;*/
+/*  border: 0;*/
+/*  border-top: 1px solid #eee;*/
+/*}*/
+
 .sr-only {
   position: absolute;
   width: 1px;

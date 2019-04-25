@@ -31,8 +31,8 @@ from . import utils
 
 def index(request):
 
-    return render(request, 'dormitory/index.html')
-
+    # return render(request, 'dormitory/notice_list.html')
+    return redirect(reverse('dormitory:notice_list'))
 
 def code(request):
     # 验证码视图函数
@@ -97,6 +97,7 @@ def login(request):
                     # 通过session存储对象必须序列化,修改配置文件
                     request.session["Student"] = student
                     request.session["Login"] = "student"
+
                     return render(request, 'dormitory/student_base.html',{"ID": "学生"})
 
                 else:
@@ -671,16 +672,56 @@ def del_dorm(request, d_id):
 
 # 添加报修管理
 def add_repairs(request):
-    pass
+    if request.method == "GET":
+        return render(request, 'dormitory/add_repairs.html')
+
+    else:
+        content = request.POST["content"].strip()
+
+        student = request.session.get("Student")
+
+        id =student.id
+        student = models.Student.objects.get(id=id)
+
+        dorm = models.Dorm.objects.get(suno=student.dorm.suno)
+        try:
+            repair = models.Repairs(dorm=dorm, content=content, student=student)
+
+            repair.save()
+            return render(request, 'dormitory/add_repairs.html', {"msg":"报修成功"})
+        except Exception as e:
+            print("添加报修信息失败", e)
+            return render(request, 'dormitory/add_repairs.html', {"error": "报修失败，请重试！"})
 
 
-# 添加水电费管理
-def add_charge(request):
-    pass
+def my_repairs(request):
+    if request.method == "GET":
+        if request.session.get("Login") == "student":
+            student = request.session.get("Student")
+            repairs = models.Repairs.objects.filter(student=student.id)
+
+            return render(request, "dormitory/my_repairs.html", {"repairs": repairs})
+        if request.session.get("Login") == "admin":
+            repairs = models.Repairs.objects.all()
+            return render(request, "dormitory/my_repairs.html", {"repairs": repairs})
 
 
-def del_charge(request):
-    pass
+# 修改维修状态
+def repairs_info(request, r_id):
+    repair = models.Repairs.objects.get(id=r_id)
+    if request.method == "GET":
+        return render(request, 'dormitory/repairs_info.html', {"repair": repair})
+    else:
+        flag = request.POST["flag"]
+        try:
+            repair.flag = flag
+            repair.save()
+            return redirect(reverse('dormitory:my_repairs'))
+        except Exception as e:
+            print("修改维修状态失败！", e)
+            return render(request, 'dormitory/repairs_info.html', {"repair": repair, "error":"修改状态是失败！"})
+
+
 
 
 # 添加公告信息
@@ -693,11 +734,11 @@ def add_notice(request):
         content = request.POST["content"].strip()
 
         if title == "":
-            return render(request, 'blog/write_article.html', {"msg_title": "标题不能为空!!!"})
+            return render(request, 'dormitory/add_notice.html', {"msg_title": "标题不能为空!!!"})
         if len(title) > 150:
-            return render(request, 'blog/write_article.html', {"msg_title": "标题太长!!"})
+            return render(request, 'dormitory/add_notice.html', {"msg_title": "标题太长!!"})
         if content == "":
-            return render(request, 'blog/write_article.html', {"content_msg": "内容不能为空!!!"})
+            return render(request, 'dormitory/add_notice.html', {"content_msg": "内容不能为空!!!"})
 
         # 文章摘要提取函数工具
         # abstract = utils.abstract(content)
@@ -721,21 +762,35 @@ def add_notice(request):
 def notice_list(request):
     # 显示公告列表
     notices = models.Notice.objects.all()
-
-    return render(request, 'dormitory/notice_list.html', {"notices": notices})
+    if request.session.get("Login") == "admin":
+        print(request.session.get("Login"))
+        return render(request, 'dormitory/notice_list.html', {"notices": notices})
+    if request.session.get("Login") == "student":
+        print(request.session.get("Login"))
+        return render(request, 'dormitory/student_notice.html', {"notices": notices})
 
 
 def show_notice(request, n_id):
     # 显示公告内容
+    # print("----1",n_id)
     try:
         notice = models.Notice.objects.get(id=n_id)
         if request.session.get("Login") == "admin":
+            print("1")
             return render(request, 'dormitory/show_notice.html', {"notice": notice})
         if request.session.get("Login") == "student":
             return render(request, 'dormitory/student_notice.html', {"notice": notice})
     except Exception as e:
         print("出错了", e)
         return redirect(reverse("dormitory:notice_list"))
+
+
+def ajax_notice_info(request, n_id):
+    notices = models.Notice.objects.all()
+    notice = models.Notice.objects.get(id=n_id)
+    notice.count += 1
+    notice.save()
+    return render(request, 'dormitory/student_notice.html', {"notice": notice, "notices":notices})
 
 
 def edit_notice(request, n_id):
@@ -748,11 +803,11 @@ def edit_notice(request, n_id):
         content = request.POST["content"].strip()
 
         if title == "":
-            return render(request, 'blog/edit_notice.html', {"msg_title": "标题不能为空!!!"})
+            return render(request, 'dormitory/edit_notice.html', {"msg_title": "标题不能为空!!!"})
         if len(title) > 150:
-            return render(request, 'blog/edit_notice.html', {"msg_title": "标题太长!!"})
+            return render(request, 'dormitory/edit_notice.html', {"msg_title": "标题太长!!"})
         if content == "":
-            return render(request, 'blog/edit_notice.html', {"content_msg": "内容不能为空!!!"})
+            return render(request, 'dormitory/edit_notice.html', {"content_msg": "内容不能为空!!!"})
 
         # 文章摘要提取函数工具
         # abstract = utils.abstract(content)
@@ -785,16 +840,82 @@ def del_notice(request, n_id):
         return redirect(reverse('dormitory:notice_list'))
 
 
+def student_info(request, s_id):
+    student = models.Student.objects.get(id=s_id)
+    if request.method == "GET":
+
+        return render(request, 'dormitory/student_info.html', {"student":student})
+    else:
+        age = request.POST["age"].strip()
+        tel = request.POST["tel"].strip()
+
+        if age == "":
+            return render(request, 'dormitory/student_info.html', {"student": student,"error": "年龄不能为空！！"})
+
+        if len(tel) == 11:
+            student.age = age
+            student.tel = tel
+            try:
+                student.save()
+                return render(request, 'dormitory/student_info.html', {"student": student,"msg": "修改成功"})
+            except Exception as e:
+                print("修改个人信息失败", e)
+                return render(request, 'dormitory/student_info.html', {"student": student, "msg": "修改失败！！"})
+
+        else:
+            return render(request, 'dormitory/student_info.html', {"student": student,"error": "手机号错误"})
+
 
 # 添加意见信息
 def add_suggest(request):
-    pass
+    if request.method == "GET":
+        return render(request, 'dormitory/add_suggest.html')
+
+    else:
+        content = request.POST["content"].strip()
+        anonymity = request.POST["anonymity"]
+        student = request.session.get("Student")
+
+
+        id = student.id
+        student = models.Student.objects.get(id=id)
+
+        dorm = models.Dorm.objects.get(suno=student.dorm.suno)
+        try:
+            suggest = models.Suggest(dorm=dorm, content=content, sno=student, anonymity=anonymity)
+
+            suggest.save()
+            return render(request, 'dormitory/add_suggest.html', {"msg": "提交成功"})
+        except Exception as e:
+            print("添加意见信息失败", e)
+            return render(request, 'dormitory/add_suggest.html', {"error": "提交失败，请重试！"})
+
+
+def suggest_list(request):
+    """
+    根据角色不同，查询的数据不同
+    :param request:
+    :return:
+    """
+    if request.session.get("Login") == "student":
+        student = request.session.get("Student")
+        suggests = models.Suggest.objects.filter(sno=student.id)
+
+        return render(request, 'dormitory/suggest_list.html', {"suggests": suggests})
+
+    if request.session.get("Login") == "admin":
+        suggests = models.Suggest.objects.all()
+        return render(request, 'dormitory/suggest_list.html', {"suggests": suggests})
 
 
 def del_suggest(request):
     pass
 
-# 学生查看公告信息
-def show_notice(request):
-    notices = models.Notice.objects.all()
-    return render(request, 'dormitory/show_notice', {"notices": notices})
+
+
+# 添加水电费管理
+def add_charge(request):
+    pass
+
+def del_charge(request):
+    pass

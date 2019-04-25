@@ -24,9 +24,18 @@
 			<div class="right_nav">
 				<table>
 					<tr>
+						{% if request.session.Login == "admin" %}
 						<td class="td_admin">管理员</td>
 						<td class="td_info" id="show">{{request.session.Admin.name}}<img src="{% static 'dormitory/img/drop-down.png' %}" ></td>
 						<td class="td_img" id="skin"><img src="{% static 'dormitory/img/clothes1.png' %}" ></td>
+
+						{% endif %}
+
+						{% if request.session.Login == "student" %}
+						<td class="td_admin">学生</td>
+						<td class="td_info" id="show">{{request.session.Student.name}}<img src="{% static 'dormitory/img/drop-down.png' %}" ></td>
+						<td class="td_img" id="skin"><img src="{% static 'dormitory/img/clothes1.png' %}" ></td>
+						{% endif %}
 					</tr>
 				</table>
 				<div class="info">
@@ -62,6 +71,7 @@
 		<div class="content">
 			<!-- 左侧导航 -->
             {% block left_nav %}
+			{% if request.session.Login == "admin" %}
 			<div class="left_nav">
 				<div class="menus_area" id="menus_area">
 					<dl class="system_log">
@@ -118,14 +128,12 @@
 
 					<dl class="statistics">
 						<dt><img class="login_left" src="{% static 'dormitory/img/repairs.png' %}" >报修管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加报修信息</a></dd>
-						<dd><a href="#">管理报修信息</a></dd>
+						<dd><a href="{% url 'dormitory:my_repairs' %}">管理报修信息</a></dd>
 
 					</dl>
 					<dl class="idea">
 						<dt><img class="login_left" src="{% static 'dormitory/img/idea.png' %}" >意见管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
-						<dd class="first_dd"><a href="#">添加意见信息</a></dd>
-						<dd><a href="#">管理意见信息</a></dd>
+						<dd><a href="{% url 'dormitory:suggest_list' %}">管理意见信息</a></dd>
 					</dl>
 					<dl class="count">
 						<dt><img class="login_left" src="{% static 'dormitory/img/cont.png' %}" >查询统计<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
@@ -136,6 +144,42 @@
 				</div>
 
 			</div>
+			{% endif %}
+
+			{% if request.session.Login == 'student' %}
+			<div class="left_nav">
+				<div class="menus_area" id="menus_area">
+
+					<dl class="custom">
+						<a  href="{% url 'dormitory:notice_list' %}"><dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >查看公告信息</dt></a>
+
+					</dl>
+
+					<dl class="syetem_management">
+						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >个人信息<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+					    <dd class="first_dd"><a href="{% url 'dormitory:student_info' request.session.Student.id %}">查看个人信息</a></dd>
+                        <dd class="first_dd"><a href="#">修改个人信息</a></dd>
+                    </dl>
+
+					<dl class="statistics">
+						<dt><img class="login_left" src="{% static 'dormitory/img/repairs.png' %}" >报修管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_repairs' %}">添加报修信息</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:my_repairs' %}">我的报修信息</a></dd>
+					</dl>
+					<dl class="idea">
+						<dt><img class="login_left" src="{% static 'dormitory/img/idea.png' %}" >意见管理<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>
+						<dd class="first_dd"><a href="{% url 'dormitory:add_suggest' %}">添加意见信息</a></dd>
+						<dd class="first_dd"><a href="{% url 'dormitory:suggest_list' %}">管理我的意见</a></dd>
+					</dl>
+
+                    <dl class="water">
+						<dt><img class="login_left" src="{% static 'dormitory/img/Charge.png' %}" >查询水电费</dt>
+					</dl>
+				</div>
+
+			</div>
+
+			{% endif %}
             {% endblock %}
 			<!-- 内容部分 -->
             {% block right_content %}

@@ -10,6 +10,10 @@ option{
 	text-align: center;
 }
 
+hr{
+    margin-bottom: 20px;
+
+}
 
 .nav{
 	width: 100%;

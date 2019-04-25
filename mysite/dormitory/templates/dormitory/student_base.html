@@ -71,10 +71,9 @@
 				<div class="menus_area" id="menus_area">
 
 					<dl class="custom">
-						<dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >查看公告信息</dt>
+						<a  href="{% url 'dormitory:notice_list' %}"><dt><img class="login_left" src="{% static 'dormitory/img/Notice.png' %}" >查看公告信息</dt></a>
 
 					</dl>
-
 
 					<dl class="syetem_management">
 						<dt><img class="login_left" src="{% static 'dormitory/img/student.png' %}" >个人信息<img class="login_right" src="{% static 'dormitory/img/select_xl01.png' %}"></dt>

@@ -1,0 +1,91 @@
+{% extends 'dormitory/base.html' %}
+
+{% load static %}
+{% block title %}我的报修信息{% endblock %}
+
+
+{% block content_title %}
+我的报修信息
+{% endblock %}
+
+
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+
+
+
+<!-- 内容详情-->
+{% block text-center %}
+{% if request.session.Login == "student" %}
+    <table class="table table-hover table-bordered table-striped">
+        <tr class="text-center">
+            <td>序号</td>
+            <td>内容</td>
+            <td>宿舍</td>
+            <td>报修人</td>
+            <td>时间</td>
+            <td>状态</td>
+        </tr>
+
+        {% for repair in repairs %}
+        <tr class="text-center">
+           <td>{{ forloop.counter }}</td>
+           <td>{{ repair.content }}</td>
+           <td>{{ repair.dorm.suno }}</td>
+           <td>{{ repair.student.name }}</td>
+           <td>{{ repair.date_time }}</td>
+            {% if repair.flag == "0" %}
+                <td>待维修</td>
+            {% elif repair.flag == "1" %}
+                <td>正在维修</td>
+            {% else %}
+                <td>已维修</td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">当前没有报修信息</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+{% endif %}
+
+{% if request.session.Login == "admin" %}
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>内容</td>
+        <td>宿舍</td>
+        <td>报修人</td>
+        <td>时间</td>
+        <td>状态</td>
+    </tr>
+
+    {% for repair in repairs %}
+    <tr class="text-center">
+       <td>{{ forloop.counter }}</td>
+       <td>{{ repair.content }}</td>
+       <td>{{ repair.dorm.suno }}</td>
+       <td>{{ repair.student.name }}</td>
+       <td>{{ repair.date_time }}</td>
+        {% if repair.flag == "0" %}
+            <td><a href="{% url 'dormitory:repairs_info' repair.id %}">待维修</a></td>
+        {% elif repair.flag == "1" %}
+            <td><a href="{% url 'dormitory:repairs_info' repair.id %}">正在维修</a></td>
+        {% else %}
+            <td><a href="{% url 'dormitory:repairs_info' repair.id %}">已维修</a></td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="2">当前没有报修信息</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endif %}
+
+{% endblock %}

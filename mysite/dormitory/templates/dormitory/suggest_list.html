@@ -1,0 +1,105 @@
+{% extends 'dormitory/base.html' %}
+
+{% load static %}
+{% block title %}意见管理{% endblock %}
+
+
+{% block content_title %}
+意见管理
+{% endblock %}
+
+
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+
+
+
+<!-- 内容详情-->
+{% block text-center %}
+
+{% if request.session.Login == "student" %}
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>内容</td>
+        <td>回复</td>
+        <td>时间</td>
+        <td>宿舍</td>
+        <td>学生</td>
+        <td>操作</td>
+    </tr>
+
+    {% for suggest in suggests %}
+    <tr class="text-center">
+       <td>{{ forloop.counter }}</td>
+       <td>{{ suggest.content }}</td>
+       <td>{{ suggest.reply }}</td>
+       <td>{{ suggest.date_time }}</td>
+        <!--        0:表示匿名 1：表示不匿名   -->
+        {% if suggest.anonymity == "1" %}
+            <td>{{ suggest.dorm.suno }}</td>
+            <td>{{ suggest.sno.name }}</td>
+        {% elif suggest.anonymity == "0" %}
+            <td>---匿名---</td>
+            <td>---匿名---</td>
+        {% else %}
+            <td>---匿名---</td>
+            <td>---匿名---</td>
+        {% endif %}
+        <td class="text-center">
+<!--            <a href="#"  ><img src="{% static 'dormitory/img/edit.png' %}" alt="修改"></a>-->
+            <a href="#"  onclick="return window.confirm('您确定要删除该留言信息吗？');" ><img src="{% static 'dormitory/img/del.png' %}" alt="删除"></a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+{% endif %}
+
+{% if request.session.Login == "admin" %}
+<table class="table table-hover table-bordered table-striped">
+    <tr class="text-center">
+        <td>序号</td>
+        <td>内容</td>
+        <td>回复</td>
+        <td>时间</td>
+        <td>宿舍</td>
+        <td>学生</td>
+        <td>操作</td>
+    </tr>
+
+    {% for suggest in suggests %}
+    <tr class="text-center">
+       <td>{{ forloop.counter }}</td>
+       <td>{{ suggest.content }}</td>
+       <td>{{ suggest.reply }}</td>
+       <td>{{ suggest.date_time }}</td>
+        <!--        0:表示匿名 1：表示不匿名   -->
+        {% if suggest.anonymity == "1" %}
+            <td>{{ suggest.dorm.suno }}</td>
+            <td>{{ suggest.sno.name }}</td>
+        {% elif suggest.anonymity == "0" %}
+            <td>---匿名---</td>
+            <td>---匿名---</td>
+        {% else %}
+            <td>---匿名---</td>
+            <td>---匿名---</td>
+        {% endif %}
+        <td class="text-center">
+            <a href="#"  ><img src="{% static 'dormitory/img/edit.png' %}" alt="回复"></a>
+            <a href="#"  onclick="return window.confirm('您确定要删除该留言信息吗？');" ><img src="{% static 'dormitory/img/del.png' %}" alt="删除"></a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+{% endif %}
+
+{% endblock %}

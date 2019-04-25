@@ -1,16 +1,81 @@
-{% extends 'dormitory/student_base.html' %}
+{% extends 'dormitory/base.html' %}
 {% load static %}
 {% block title %}公告信息{% endblock %}
 {% block content_title %}
-公告信息
+
 {% endblock %}
 <!--搜素栏-->
 {% block query %}
 {% endblock %}
 
 
-{% block text-center %}
+{% block details %}
+{% load static %}
+<style>
+    .notice{
+        width: 270px;
+        height: 450px;
+        /*border: 1px solid  saddlebrown;*/
+        margin-top: 10px;
+        float: left;
+        margin-left: 10px;
 
+    }
+    .details>ul>li>a {
+	font-size: 14px;
+	line-height: 260%;
+	color: #222;
+    }
+
+    .notice_info{
+        width: 800px;
+        height: 450px;
+        margin-top: 10px;
+        /*border: 3px solid  saddlebrown;*/
+        /*border-style: groove;*/
+        float: left;
+    }
+    .hr{
+        margin-bottom: 20px;
+
+    }
+
+
+</style>
+
+
+<div class="notice">
+    <div class="logo-inform ">
+
+        <ul>
+            <li><img src="{% static 'dormitory/img/tzgg_t.jpg' %}" ></li>
+
+    <!--        <li class="li-r"><a href="#">更多</a></li>-->
+        </ul>
+    </div>
+    <br>
+    <div class="details">
+
+        <ul>
+            {% for notice in notices %}
+            <li><span><img src="{% static 'dormitory/img/ico3.png' %}">&nbsp;</span><a href="{% url 'dormitory:ajax_notice_info' notice.id %}">{{ notice.title }}<span class="span">[{{ notice.publishTime }}]</span></a></li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+
+<div class="notice_info">
+
+    <p class="text-center" style="font-size: 20px">{{ notice.title }}</p>
+    <hr class="hr" size="2px"color="0634A3">
+    <div>
+        {{ notice.content }}
+
+    </div>
+
+    <p class="text-right">{{ notice.publishTime }}</p>
+</div>
 
 
 

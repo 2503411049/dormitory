@@ -1,0 +1,129 @@
+{% extends 'dormitory/base.html' %}
+{% load static %}
+{% block title %}个人信息{% endblock %}
+{% block content_title %}
+个人资料
+<style>
+    .alter_info{
+
+        visibility: hidden;
+    }
+    /*.message{*/
+    /*    visibility: hidden;*/
+    /*}*/
+
+</style>
+{% endblock %}
+<!--搜素栏-->
+{% block query %}
+{% endblock %}
+
+
+{% block text-center %}
+{% load static %}
+
+
+
+<div class="message">
+    <table class="table table-hover table-bordered table-striped">
+        <tr >
+            <td>学号：{{student.sno}}</td>
+        </tr>
+        <tr>
+            <td>姓名：{{student.name}}</td>
+        </tr>
+        <tr>
+            <td>性别：{{student.gender}}</td>
+        </tr>
+        <tr>
+            <td>年龄：{{student.age}}</td>
+        </tr>
+        <tr>
+            <td>学院：{{student.department.dep_name}}</td>
+        </tr>
+
+        <tr>
+            <td>专业：{{student.domain.dom_name}}</td>
+        </tr>
+
+        <tr>
+            <td>楼房：{{student.tower.num}}</td>
+        </tr>
+
+        <tr>
+            <td>楼层：{{student.floor.con}}</td>
+        </tr>
+
+        <tr>
+            <td>宿舍号：{{student.dorm.suno}}</td>
+        </tr>
+
+        <tr>
+            <td>手机号：{{student.tel}}</td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-primary" id="alter">完善资料</button>
+                <span style="color: red">{{error}}</span>
+                <span>{{msg}}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="alter_info">
+    <form action="{% url 'dormitory:student_info' request.session.Student.id %}" method="post">
+        {% csrf_token %}
+        <table class="table table-hover table-bordered table-striped">
+<!--             <tr>-->
+<!--                 <td>学号：<input type="text" disabled value="{{ student.sno }}"> </td>-->
+<!--             </tr>-->
+<!--             <tr>-->
+<!--                 <td>姓名：<input type="text" disabled value="{{ student.name }}"> </td>-->
+<!--             </tr>-->
+             <tr>
+                 <td>年龄：<input type="number" id="age" name="age" value="{{ student.age }}"> </td>
+             </tr>
+
+              <tr>
+                 <td>手机号：<input type="number" id="tel" name="tel" value="{{ student.tel }}"> </td>
+              </tr>
+              <tr>
+                  <td><input type="submit" value="保存" id="submit" class="btn btn-primary"></td>
+              </tr>
+
+         </table>
+    </form>
+</div>
+
+<script>
+
+    $(function () {
+        $("#alter").click(function () {
+            $(".message").css("visibility", "hidden");
+            $(".alter_info").css("visibility", "visible");
+
+        })
+
+        $("#submit").mousemove(function () {
+            let  $age = $("#age").val()
+            if ($age == ""){
+
+                alert("年龄不能为空")
+            } else {
+
+                let $tel = $("#tel").val()
+                if ($tel.length != 11){
+                    alert("手机号错误")
+                }
+            }
+
+
+        })
+    })
+
+
+</script>
+
+{% endblock %}
+

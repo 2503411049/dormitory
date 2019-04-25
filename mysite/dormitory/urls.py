@@ -16,6 +16,7 @@ urlpatterns = [
 
     url(r"^add_student/$", views.add_student, name="add_student"),
     url(r"^edit_student/(?P<s_id>\d+)/$", views.edit_student, name="edit_student"),
+    url(r"^student_info/(?P<s_id>\d+)/$", views.student_info, name="student_info"),
     url(r"^student_list/$", views.student_list, name="student_list"),
     url(r"^allot_dorm/$", views.allot_dorm, name="allot_dorm"),
 
@@ -50,6 +51,7 @@ urlpatterns = [
     url(r"^del_notice/(?P<n_id>\d+)/$", views.del_notice, name="del_notice"),
 
     url(r"^add_suggest/$", views.add_suggest, name="add_suggest"),
+    url(r"^suggest_list/$", views.suggest_list, name="suggest_list"),
     url(r"^del_suggest/$", views.del_suggest, name="del_suggest"),
 
     # 验证码
@@ -60,6 +62,11 @@ urlpatterns = [
     url(r"^ajax_all_domain/(?P<dep>\d+)/$", views.ajax_all_domain, name="ajax_all_domain"),
     # 添加宿舍走的ajax
     url(r"^ajax_all_floor/(?P<tow_id>\d+)/$", views.ajax_all_floor, name="ajax_all_floor"),
+
+    url(r"^ajax_notice_info/(?P<n_id>\d+)/$", views.ajax_notice_info, name="ajax_notice_info"),
+    # 报修
+    url(r"^my_repairs/$", views.my_repairs, name="my_repairs"),
+    url(r"^repairs_info/(?P<r_id>\d+)/$", views.repairs_info, name="repairs_info"),
 
 
 

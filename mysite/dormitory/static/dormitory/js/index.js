@@ -13,17 +13,17 @@ $(function(){
 	//皮肤
 
 	$("#skin_red").click(function(){
-		$(".nav").css("background-color","red")
+		$(".nav").css("background-color","red");
 		$(".info").css("background-color","red")
 	})
 	$("#skin_plant").click(function(){
 		
-		$(".nav").css("background-color","#3992d0")
+		$(".nav").css("background-color","#3992d0");
 		$(".info").css("background-color","#3992d0")
 	})
 	$("#skin_black").click(function(){
 
-		$(".nav").css("background-color","black")
+		$(".nav").css("background-color","black");
 		$(".info").css("background-color","black")
 	})
 })
