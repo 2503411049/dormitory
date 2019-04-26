@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import uuid
 import logging
 from datetime import datetime
